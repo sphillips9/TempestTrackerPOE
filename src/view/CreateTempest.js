@@ -12,8 +12,8 @@ tempestProjectNamespace.view.createTempest = {
     handleSaveButtonClickEvent: function () {
         var createTempestForm = document.forms['Tempest'];
         var slots = { Type: createTempestForm.Type.value,
-            difficulty: createTempestForm.difficulty.value,
-            zone: createTempestForm.zone.value,
+            difficulty: createTempestForm.Difficulty.value,
+            zone: createTempestForm.Zone.value,
             duration: createTempestForm.Duration.value};
         Tempest.add(slots);
         Tempest.saveAll();

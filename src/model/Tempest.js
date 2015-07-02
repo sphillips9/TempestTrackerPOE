@@ -52,26 +52,21 @@ Tempest.add = function(slots) {
     console.log("Tempest " + slots.Type + " created!");
 };
 
-function getTempestObj(Type, Difficulty, Zone) {
-
-}
-
-Tempest.destroy = function(type) {
-    if (Tempest.instances[type]) {
-        console.log("Tempest " + type + " deleted");
-        delete Tempest.instances[type];
-        Tempest.saveAll();
+Tempest.destroyOldTempests = function() {
+    Tempest.loadAll();
+    for(i = 0; i < tempestInstances.length; i++) {
+        if (tempestInstances[i].duration <= 0) {
+            delete tempestInstances[i];
+        }
     }
-    else {
-        console.log("There is no tempest with type: " + type + " in the database!");
-    }
+    Tempest.saveAll();
 };
 
 Tempest.createTestData = function() {
-    tempestInstances.push(new Tempest({Type:"Damage", difficulty: "Normal", zone: "Ledge", duration:60}));
-    tempestInstances.push(new Tempest({Type:"Rarity", difficulty: "Cruel", zone: "Riverways", duration:60}));
-    tempestInstances.push(new Tempest({Type:"Speed", difficulty: "Merciless", zone: "Docks", duration:60}));
-    tempestInstances.push(new Tempest({Type:"Animate Weapons", difficulty: "Map", zone: "Tropical Island", duration:60}));
+    Tempest.add(new Tempest({Type:"Damage", difficulty: "Normal", zone: "Ledge", duration:60}));
+    Tempest.add(new Tempest({Type:"Rarity", difficulty: "Cruel", zone: "Riverways", duration:60}));
+    Tempest.add(new Tempest({Type:"Speed", difficulty: "Merciless", zone: "Docks", duration:60}));
+    Tempest.add(new Tempest({Type:"Animate Weapons", difficulty: "Map", zone: "Tropical Island", duration:0}));
     Tempest.saveAll();
 };
 
