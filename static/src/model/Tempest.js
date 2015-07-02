@@ -54,11 +54,11 @@ Tempest.add = function(slots) {
 
 Tempest.destroyOldTempests = function() {
     Tempest.loadAll();
-    for(i = 0; i < tempestInstances.length; i++) {
-        if (tempestInstances[i].duration <= 0) {
-            delete tempestInstances[i];
-        }
-    }
+
+    tempestInstances = tempestInstances.filter(function (temp) {
+        return temp.duration > 0;
+    });
+
     Tempest.saveAll();
 };
 
@@ -66,7 +66,7 @@ Tempest.createTestData = function() {
     Tempest.add(new Tempest({Type:"Damage", difficulty: "Normal", zone: "Ledge", duration:60}));
     Tempest.add(new Tempest({Type:"Rarity", difficulty: "Cruel", zone: "Riverways", duration:60}));
     Tempest.add(new Tempest({Type:"Speed", difficulty: "Merciless", zone: "Docks", duration:60}));
-    Tempest.add(new Tempest({Type:"Animate Weapons", difficulty: "Map", zone: "Tropical Island", duration:0}));
+    Tempest.add(new Tempest({Type:"Animate Weapons", difficulty: "Map", zone: "Tropical Island", duration:60}));
     Tempest.saveAll();
 };
 
