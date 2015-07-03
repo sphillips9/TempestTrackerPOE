@@ -1,8 +1,9 @@
 package main
 
 import (
-	//"fmt"
 	"encoding/json"
+	//	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -22,11 +23,16 @@ func handleTempests(w http.ResponseWriter, req *http.Request) {
 
 	switch req.Method {
 	case "POST":
-		var buffer []byte
-		n, _ := req.Body.Read(buffer)
+
+		buffer, err := ioutil.ReadAll(req.Body)
 		tempest := &Tempest{}
-		json.Unmarshal(buffer[:n], &tempest)
-		tempests = append(tempests, tempest)
+		err = json.Unmarshal(buffer, &tempest)
+		if err != nil {
+			//fmt.Println(err.Error())
+		} else {
+			tempests = append(tempests, tempest)
+
+		}
 		w.WriteHeader(200)
 	case "GET":
 		j, err := json.Marshal(tempests)
