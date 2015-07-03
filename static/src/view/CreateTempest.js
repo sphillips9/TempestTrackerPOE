@@ -1,3 +1,5 @@
+var hourInMillis = 3600000;
+
 tempestProjectNamespace.view.createTempest = {
     setupUserInterface: function () {
         var saveButton = document.forms['Tempest'].commit;
@@ -10,11 +12,15 @@ tempestProjectNamespace.view.createTempest = {
         });
     },
     handleSaveButtonClickEvent: function () {
+        var tempStartTime = Date.now();
+        var tempEndTime = tempStartTime + hourInMillis;
+
         var createTempestForm = document.forms['Tempest'];
-        var slots = { Type: createTempestForm.Type.value,
+        var slots = {type: createTempestForm.Type.value,
             difficulty: createTempestForm.Difficulty.value,
             zone: createTempestForm.Zone.value,
-            duration: createTempestForm.Duration.value};
+            startTime: tempStartTime.value,
+            endTime: tempEndTime.value};
         Tempest.add(slots);
         Tempest.saveAll();
         createTempestForm.reset();

@@ -1,11 +1,13 @@
 /** Tempest object used to store values associated with different tempests*/
 function Tempest(slots) {
-    this.Type = slots.Type;
+    this.type = slots.type;
     this.difficulty = slots.difficulty;
     this.zone = slots.zone;
-    this.duration = slots.duration;
+    this.startTime = slots.startTime;
+    this.endTime = slots.endTime;
 }
 
+var hourInMillis = 3600000;
 var tempestInstances = [];
 
 Tempest.convertRow2Obj = function(tempestRow) {
@@ -49,24 +51,26 @@ Tempest.saveAll = function() {
 
 Tempest.add = function(slots) {
     tempestInstances.push(new Tempest(slots));
-    console.log("Tempest " + slots.Type + " created!");
+    console.log("Tempest " + slots.type + " created!");
 };
 
 Tempest.destroyOldTempests = function() {
     Tempest.loadAll();
 
     tempestInstances = tempestInstances.filter(function (temp) {
-        return temp.duration > 0;
+        return temp.startTime > 0;
     });
 
     Tempest.saveAll();
 };
 
 Tempest.createTestData = function() {
-    Tempest.add(new Tempest({Type:"Damage", difficulty: "Normal", zone: "Ledge", duration:60}));
-    Tempest.add(new Tempest({Type:"Rarity", difficulty: "Cruel", zone: "Riverways", duration:60}));
-    Tempest.add(new Tempest({Type:"Speed", difficulty: "Merciless", zone: "Docks", duration:60}));
-    Tempest.add(new Tempest({Type:"Animate Weapons", difficulty: "Map", zone: "Tropical Island", duration:60}));
+    var tempStartTime = Date.now();
+    var tempEndTime = tempStartTime + hourInMillis;
+    Tempest.add(new Tempest({type:"Damage", difficulty: "Normal", zone: "Ledge", startTime:tempStartTime, endTime: tempEndTime}));
+    Tempest.add(new Tempest({type:"Rarity", difficulty: "Cruel", zone: "Riverways", startTime:tempStartTime, endTime: tempEndTime}));
+    Tempest.add(new Tempest({type:"Speed", difficulty: "Merciless", zone: "Docks", startTime:tempStartTime, endTime: tempEndTime}));
+    Tempest.add(new Tempest({type:"Animate Weapons", difficulty: "Map", zone: "Tropical Island", startTime:tempStartTime, endTime: tempEndTime}));
     Tempest.saveAll();
 };
 
