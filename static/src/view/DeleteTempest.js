@@ -11,9 +11,9 @@ tempestProjectNamespace.view.DeleteTempest = {
             key = keys[i];
             tempest = Tempest.instances[key];
             optionEl = document.createElement("option");
-            optionEl.text = tempest.Type;
-            optionEl.value = tempest.Type;
-            console.log("added: " + tempest.Type + " to the drop down list");
+            optionEl.text = tempest.type;
+            optionEl.value = tempest.type;
+            console.log("added: " + tempest.type + " to the drop down list");
             selectEl.add(optionEl, null);
         }
         deleteButton.addEventListener("click", tempestProjectNamespace.view.DeleteTempest.handleDeleteButtonClickEvent);
