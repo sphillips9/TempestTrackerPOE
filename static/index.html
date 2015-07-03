@@ -14,5 +14,18 @@
     <li><button type="button" onclick="Tempest.createTestData()">Create test data</button></li>
     <li><button type="button" onclick="Tempest.destroyOldTempests()">Destroy Old Tempests Test</button></li>
 </menu>
+<script>
+
+  var es = new EventSource("es");
+  es.onerror=function(e){
+    es.close();
+  }
+
+  es.addEventListener("TEMPEST",function(e){
+    var tempest = JSON.parse(e.data);
+    console.log(tempest);
+  });
+
+</script>
 </body>
 </html>
