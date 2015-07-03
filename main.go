@@ -14,7 +14,7 @@ type Tempest struct {
 	EndTime    string `json:"endTime"`
 }
 
-var tempests []*Tempest = make([]*Tempest, 20)
+var tempests []*Tempest = make([]*Tempest, 0)
 
 func handleTempests(w http.ResponseWriter, req *http.Request) {
 
