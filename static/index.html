@@ -5,6 +5,9 @@
     <title>TempestTracker</title>
     <script src="src/model/Tempest.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="semantic.min.css">
+
+
     <style>
         body {
             background: url(http://webcdn.pathofexile.com/image/layout/background-awakening-release.jpg?1435660190);
@@ -13,6 +16,11 @@
             color: firebrick;
             margin-left: 40px;
         }
+        .grayscale{
+          filter:grayscale(100%);
+        }
+
+
     </style>
 </head>
 <body>
@@ -31,8 +39,181 @@
 
 <ul id="esDisplay"></ul>
 
+
+<div id="content" style="background-color:ghostwhite;" class="ui raised very padded text container segment"></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script type="text/jsx">
+
+var TempestRating = React.createClass({
+  getInitialState: function() {
+    return {rating: 0, items: []};
+  },
+  render: function() {
+  }
+
+});
+
+var Tempest = React.createClass({
+  render: function() {
+
+    var dif = this.props.expire - Date.now();
+    var remain = new Date(dif);
+    var mins = remain.getMinutes();
+    var str;
+
+    if (mins){
+      str = mins + " minutes remaining ";
+    }else{
+      str = " < 1 minute remaining"
+    }
+
+
+    return (
+
+      <div className="tempest item">
+        <div className="ui tiny image">
+          <img src="map.png"/>
+        </div>
+        <div className="content">
+          <a className="header">
+            {this.props.zone}
+          </a>
+          <div className="meta">
+            <span>{str}</span>
+          </div>
+          <div className="description">
+          <p>
+
+            etc etc sdfsd fksdhfuw qpfj asdknf sdfiqweo fmskldnf sduofhwf sd
+            fsd fiusdf nqweipq dfnksdfp owiop jf ksgi gdngkdf goppw fsdf
+          </p>
+
+          </div>
+          <div className="bottom aligned extra">
+          <div className="ui label">{this.props.difficulty}</div>
+          <div className="ui label">{this.props.type}</div>
+
+            <div className="ui right floated">
+              <img src="jewel.png"/>
+              <img src="jewel.png"/>
+              <img src="jewel.png"/>
+              <img src="jewel.png" className="grayscale"/>
+              <img src="jewel.png" className="grayscale"/>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+});
+
+var TempestList = React.createClass({
+  render: function() {
+
+    var tempestNodes = this.props.data.map(function (tempest) {
+     return (
+       <Tempest type={tempest.type} difficulty={tempest.difficulty} zone={tempest.zone} expire={tempest.expire}>
+
+       </Tempest>
+     );
+   });
+
+    return (
+      <div className="tempestList ui divided items">
+        {tempestNodes}
+      </div>
+    );
+  }
+});
+
+
+var CommentBox = React.createClass({
+  getInitialState: function() {
+    return {data: []};
+  },
+  loadCommentsFromServer: function() {
+
+    var self = this;
+    var es = new EventSource("http://gdf3.com:555/es");
+    es.onerror=function(e){
+      es.close();
+    }
+
+    es.addEventListener("TEMPEST",function(e){
+      var t = JSON.parse(e.data);
+
+      var toAdd=[].concat(t).map(function(x){
+        var clone = JSON.parse(JSON.stringify(x));
+        clone.expire = new Date(clone.expire);
+        return clone;
+      });
+
+
+
+      var combined = self.state.data.concat(toAdd);
+      console.log("toadd",combined);
+
+
+      self.setState({data:combined});
+    });
+
+    //var next = {author: "John McClane", text: "find lucy kill everybody else"};
+  //  this.setState({data: this.state.data.concat([next])});
+  },
+  refreshTempests:function(){
+
+    var now = Date.now();
+    var temp = this.state.data.filter(function(t){
+      return t.expire > now;
+    });
+
+    this.setState({data:temp});
+
+  },
+  render: function() {
+    return (
+      <div className="commentBox">
+        <h1>Active Tempests</h1>
+
+        <TempestList data={this.state.data} />
+
+      </div>
+    );
+  },
+  componentDidMount: function() {
+    this.loadCommentsFromServer();
+    setInterval(this.refreshTempests, 5000);
+  },
+  pushComment:function(){
+
+  }
+});
+
+var data = [
+  {author: "Pete Hunt", text: "This is one comment"},
+  {author: "Jordan Walke", text: "This is *another* comment"},
+  {author: "John McClane", text: "find lucy kill everybody else"}
+];
+
+
+
+React.render(
+  <CommentBox data={data} pollInterval={2000} />,
+  document.getElementById('content')
+);
+</script>
+
+
 <script>
 "use strict";
+
+/*
 (function(){
 
   //var el = document.getElementById("esDisplay");
@@ -146,7 +327,7 @@ var HttpClient = function(){
 var testtempest = {"type":"tempest","difficulty":"merciless","zone":"mountain ledge","startTime":"now","endTime":"later"};
 var client = HttpClient();
 
-
+*/
 </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"sync"
+	"time"
 )
 
 type Tempest struct {
@@ -21,6 +22,26 @@ var tempLock sync.Mutex
 func init() {
 	hub = &UserHub{}
 	tempests = make([]*Tempest, 0)
+
+	go func() {
+		tick := time.NewTicker(5 * time.Minute)
+		for {
+			<-tick.C
+
+			func() {
+				tempLock.Lock()
+				defer tempLock.Unlock()
+				now := time.Now().UnixNano() / 1000000
+
+				for i := len(tempests); i >= 0; i-- {
+					if tempests[i].Expire < now {
+						tempests = append(tempests[:i], tempests[i+1:]...)
+					}
+				}
+			}()
+		}
+	}()
+
 }
 
 func main() {
