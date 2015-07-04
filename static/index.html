@@ -90,6 +90,39 @@
 })();
 
 
+var HttpClient = function(){
+"use strict";
+	var Post = function(tempest){
+		var promise = new Promise( function (resolve, reject) {
+
+			var client = new XMLHttpRequest();
+
+			client.onload=function(e){
+				if (this.status==200){
+					var r = JSON.parse(this.response);
+					resolve(r);
+				}else{
+					reject(this.statusText);
+				}
+
+			};
+
+			var json = JSON.stringify(tempest);
+			client.open("POST","tempest");
+			client.send(json);
+
+		});//<-- forgot this )
+
+	};
+
+	return {Post:Post};
+
+};
+
+var testtempest = JSON.parse('{"type":"tempest","difficulty":"merciless","zone":"mountain ledge","startTime":"now","endTime":"later"}');
+var client = HttpClient();
+
+
 </script>
 </body>
 </html>
