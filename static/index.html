@@ -14,17 +14,71 @@
     <li><button type="button" onclick="Tempest.createTestData()">Create test data</button></li>
     <li><button type="button" onclick="Tempest.destroyOldTempests()">Destroy Old Tempests Test</button></li>
 </menu>
-<script>
 
+<ul id="esDisplay"></ul>
+
+<script>
+"use strict";
+(function(){
+
+  var el = document.getElementById("esDisplay");
+  var temp = [];
   var es = new EventSource("es");
   es.onerror=function(e){
     es.close();
   }
 
   es.addEventListener("TEMPEST",function(e){
-    var tempest = JSON.parse(e.data);
-    console.log(tempest);
+    var t = JSON.parse(e.data);
+
+    var toAdd=[].concat(t).map(function(x){
+      var clone = JSON.parse(JSON.stringify(x));
+      clone.expire = new Date(clone.expire);
+      return clone;
+    });
+
+
+    temp = temp.concat(toAdd);
+    console.log(temp);
   });
+
+  var refreshList = function(){
+    var now = Date.now();
+
+    temp = temp.filter(function(t){
+      return t.expire > now;
+    });
+
+    var d = document.createDocumentFragment();
+    var elements = temp.map(function(t){
+      var n = document.createElement("li");
+      var left = new Date(t.expire - now);
+
+      var mins = left.getMinutes();
+      var inner = t.type + " " + t.zone + " " + t.difficulty + ", ";
+
+      if (mins){
+        inner += mins + " minutes remaining ";
+      }else{
+        inner+= " > 1 minute remaining"
+      }
+
+      n.innerHTML= inner;
+      return n;
+    });
+
+    elements.forEach(function(li){
+      d.appendChild(li);
+    });
+
+    el.innerHTML="";
+    el.appendChild(d);
+  };
+
+  setInterval(refreshList,1000);
+
+})();
+
 
 </script>
 </body>

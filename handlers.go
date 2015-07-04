@@ -6,7 +6,15 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
+
+func getExpireTime() int64 {
+	now := time.Now()
+	expire := now.Add(time.Minute * 5)
+	nanos := expire.UnixNano()
+	return nanos / 1000000
+}
 
 func handleTempests(w http.ResponseWriter, req *http.Request) {
 
@@ -22,6 +30,7 @@ func handleTempests(w http.ResponseWriter, req *http.Request) {
 			//fmt.Println(err.Error())
 		} else {
 
+			tempest.Expire = getExpireTime()
 			func() {
 				tempLock.Lock()
 				defer tempLock.Unlock()
