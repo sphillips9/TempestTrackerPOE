@@ -11,7 +11,7 @@ import (
 
 func getExpireTime() int64 {
 	now := time.Now()
-	expire := now.Add(time.Minute * 5)
+	expire := now.Add(time.Minute * 60)
 	nanos := expire.UnixNano()
 	return nanos / 1000000
 }
