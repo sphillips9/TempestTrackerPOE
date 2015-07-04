@@ -140,7 +140,7 @@ var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
 
     var self = this;
-    var es = new EventSource("http://gdf3.com:555/es");
+    var es = new EventSource("es");
     es.onerror=function(e){
       es.close();
     }

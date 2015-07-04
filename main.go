@@ -33,7 +33,7 @@ func init() {
 				defer tempLock.Unlock()
 				now := time.Now().UnixNano() / 1000000
 
-				for i := len(tempests); i >= 0; i-- {
+				for i := len(tempests) - 1; i >= 0; i-- {
 					if tempests[i].Expire < now {
 						tempests = append(tempests[:i], tempests[i+1:]...)
 					}
