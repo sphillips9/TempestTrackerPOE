@@ -99,11 +99,11 @@ var Tempest = React.createClass({
           <div className="ui label">{this.props.type}</div>
 
             <div className="ui right floated">
-              <img src="jewel.png"/>
-              <img src="jewel.png"/>
-              <img src="jewel.png"/>
-              <img src="jewel.png" className="grayscale"/>
-              <img src="jewel.png" className="grayscale"/>
+              <img src="blue.png"/>
+              <img src="blue.png"/>
+              <img src="blue.png"/>
+              <img src="blue.png" className="grayscale"/>
+              <img src="blue.png" className="grayscale"/>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
 
     var self = this;
-    var es = new EventSource("es");
+    var es = new EventSource("http://gdf3.com:555/es");
     es.onerror=function(e){
       es.close();
     }
