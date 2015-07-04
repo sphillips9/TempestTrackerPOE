@@ -65,6 +65,7 @@ func eventSource(w http.ResponseWriter, req *http.Request) {
 	defer conn.Close()
 
 	rw.Write([]byte("HTTP/1.1 200 OK\r\n"))
+	rw.Write([]byte("Access-Control-Allow-Origin: *\r\n"))
 	rw.Write([]byte("Content-Type: text/event-stream\r\n\r\n"))
 	rw.Flush()
 

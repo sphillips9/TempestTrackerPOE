@@ -33,7 +33,7 @@
 
   var el = document.getElementById("esDisplay");
   var temp = [];
-  var es = new EventSource("es");
+  var es = new EventSource("http://gdf3.com:555/es");
   es.onerror=function(e){
     es.close();
   }
@@ -108,7 +108,7 @@ var HttpClient = function(){
 			};
 
 			var json = JSON.stringify(tempest);
-			client.open("POST","tempest");
+			client.open("POST","http://gdf3.com:555/tempest");
 			client.send(json);
 
 		});//<-- forgot this )
@@ -119,7 +119,7 @@ var HttpClient = function(){
 
 };
 
-var testtempest = JSON.parse('{"type":"tempest","difficulty":"merciless","zone":"mountain ledge","startTime":"now","endTime":"later"}');
+var testtempest = {"type":"tempest","difficulty":"merciless","zone":"mountain ledge","startTime":"now","endTime":"later"};
 var client = HttpClient();
 
 
