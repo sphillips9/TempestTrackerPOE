@@ -5,7 +5,9 @@ tempestProjectNamespace.view.listTempests = {
         var tableBodyEl = document.querySelector("table#Tempest>tbody");
         var i=0, keys=[], key="", row={};
         // load all tempests objects
-        Tempest.loadAll();
+
+        //THIS NEEDS TO QUERY SERVER TO GET ALL THE TEMPEST INSTANCES
+
         keys = Object.keys(tempestInstances);
         // for each tempest, create a table row with a cell for each attribute
         for (i=0; i < keys.length; i++) {
