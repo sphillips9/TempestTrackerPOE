@@ -17,6 +17,12 @@
 </head>
 <body>
 <h1>TempestTracker</h1>
+
+<table class ="sortable" id="Tempest" cellspacing="50" cellpadding="10" style="background-color:ghostwhite">
+    <thead><tr><th>Type</th><th>Difficulty</th><th>Zone</th><th>Remaining Time</th></tr></thead>
+    <tbody></tbody>
+</table>
+
 <menu>
     <li><a href="listTempests.html"><button type="button">List all active tempests</button></a></li>
     <li><a href="createTempest.html"><button type="button">Add a new tempest</button></a></li>
@@ -29,7 +35,9 @@
 "use strict";
 (function(){
 
-  var el = document.getElementById("esDisplay");
+  //var el = document.getElementById("esDisplay");
+  var el = document.querySelector("table#Tempest>tbody");
+
   var temp = [];
   var es = new EventSource("http://gdf3.com:555/es");
   es.onerror=function(e){
@@ -59,24 +67,43 @@
 
     var d = document.createDocumentFragment();
     var elements = temp.map(function(t){
-      var n = document.createElement("li");
+      var tr = document.createElement("tr");
       var left = new Date(t.expire - now);
 
       var mins = left.getMinutes();
-      var inner = t.type + " " + t.zone + " " + t.difficulty + ", ";
+
+      var td = document.createElement("td");
+      td.innerHTML=t.type;
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      td.innerHTML=t.difficulty;
+      tr.appendChild(td);
+
+      td = document.createElement("td");
+      td.innerHTML=t.zone;
+      tr.appendChild(td);
+
+//      var inner = t.type + " " + t.zone + " " + t.difficulty + ", ";
+
+      td = document.createElement("td");
 
       if (mins){
-        inner += mins + " minutes remaining ";
+        td.innerHTML = mins + " minutes remaining ";
       }else{
-        inner+= " < 1 minute remaining"
+        td.innerHTML = " < 1 minute remaining"
       }
 
-      n.innerHTML= inner;
-      return n;
+      tr.appendChild(td);
+
+
+  //    n.innerHTML= inner;
+    //  return n;
+    return tr;
     });
 
-    elements.forEach(function(li){
-      d.appendChild(li);
+    elements.forEach(function(row){
+      d.appendChild(row);
     });
 
     el.innerHTML="";
@@ -97,8 +124,7 @@ var HttpClient = function(){
 
 			client.onload=function(e){
 				if (this.status==200){
-					var r = JSON.parse(this.response);
-					resolve(r);
+					resolve(this.status);
 				}else{
 					reject(this.statusText);
 				}
