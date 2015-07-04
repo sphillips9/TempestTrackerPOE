@@ -19,6 +19,7 @@ func getExpireTime() int64 {
 func handleTempests(w http.ResponseWriter, req *http.Request) {
 
 	defer req.Body.Close()
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 
 	switch req.Method {
 	case "POST":
