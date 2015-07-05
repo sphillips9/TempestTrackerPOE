@@ -7,8 +7,8 @@
 <script src="src/model/Tempest.js"></script>
 
 <link rel="stylesheet" type="text/css" href="semantic.min.css">
-<link rel="stylesheet" type="text/css" href="dropdown.css">
 <script src="semantic.min.js"></script>
+<link rel="stylesheet" type="text/css" href="dropdown.css">
 
     <style>
         body {
@@ -275,13 +275,15 @@ var TempestRating = React.createClass({
 
 });
 
-var tempest = React.createClass({
+var Tempest = React.createClass({
   render: function() {
 
     var dif = this.props.expire - Date.now();
     var remain = new Date(dif);
     var mins = remain.getMinutes();
     var str;
+
+    console.log("rendering");
 
     if (mins){
       str = mins + " minutes remaining ";
@@ -333,9 +335,9 @@ var TempestList = React.createClass({
 
     var tempestNodes = this.props.data.map(function (tempest) {
      return (
-       <tempest type={tempest.type} difficulty={tempest.difficulty} zone={tempest.zone} expire={tempest.expire}>
+       <Tempest type={tempest.type} difficulty={tempest.difficulty} zone={tempest.zone} expire={tempest.expire}>
 
-       </tempest>
+       </Tempest>
      );
    });
 
@@ -383,6 +385,7 @@ var CommentBox = React.createClass({
 
     var now = Date.now();
     var temp = this.state.data.filter(function(t){
+      console.log("queue");
       return t.expire > now;
     });
 
@@ -433,7 +436,7 @@ var options = [
 
 React.render(
 
-  <CommentBox options={options} pollInterval={2000} />,
+  <CommentBox data={data} options={options}/>,
   document.getElementById('content')
 );
 </script>
