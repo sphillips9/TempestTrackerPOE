@@ -275,7 +275,7 @@ var TempestRating = React.createClass({
 
 });
 
-var Tempest = React.createClass({
+var TempestItem = React.createClass({
   render: function() {
 
     var dif = this.props.expire - Date.now();
@@ -294,7 +294,7 @@ var Tempest = React.createClass({
 
     return (
 
-      <div className="tempest item">
+      <div className="tempestItem item">
         <div className="ui tiny image">
           <img src="map.png"/>
         </div>
@@ -335,9 +335,9 @@ var TempestList = React.createClass({
 
     var tempestNodes = this.props.data.map(function (tempest) {
      return (
-       <Tempest type={tempest.type} difficulty={tempest.difficulty} zone={tempest.zone} expire={tempest.expire}>
+       <TempestItem type={tempest.type} difficulty={tempest.difficulty} zone={tempest.zone} expire={tempest.expire}>
 
-       </Tempest>
+       </TempestItem>
      );
    });
 
