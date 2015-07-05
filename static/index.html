@@ -352,7 +352,7 @@ var TempestList = React.createClass({
 
 var CommentBox = React.createClass({
   getInitialState: function() {
-    return {data: []};
+    return {data: [],selectedDifficulty: { value: 'merciless', label: 'merciless'}};
   },
   loadCommentsFromServer: function() {
 
@@ -381,23 +381,41 @@ var CommentBox = React.createClass({
     });
 
   },
-  refreshTempests:function(){
+  selectDifficulty:function(option){
 
+    this.setState({selectedDifficulty:option});
+
+  },
+  refreshTempests:function(){
+    var self=this;
     var now = Date.now();
     var temp = this.state.data.filter(function(t){
       console.log("queue");
-      return t.expire > now;
+      return (t.expire > now);
     });
 
     this.setState({data:temp});
 
   },
   render: function() {
+    var self=this;
+
+    var filtered = this.state.data.filter(function(t){
+      return (t.difficulty.toLowerCase()===self.state.selectedDifficulty.value);
+    });
+
     return (
       <div className="commentBox">
         <h1>Active Tempests</h1>
-        <Dropdown options={this.props.options} />
-        <TempestList data={this.state.data} />
+        <div className="ui grid">
+          <div className="eight wide column">
+            <Dropdown options={this.props.options} value={this.state.selectedDifficulty} onChange={this.selectDifficulty}/>
+          </div>
+          <div className="eight wide column">
+            <Dropdown options={this.props.options2} />
+          </div>
+        </div>
+        <TempestList data={filtered} />
 
       </div>
     );
@@ -411,32 +429,23 @@ var CommentBox = React.createClass({
   }
 });
 
-var data = [
-  {author: "Pete Hunt", text: "This is one comment"},
-  {author: "Jordan Walke", text: "This is *another* comment"},
-  {author: "John McClane", text: "find lucy kill everybody else"}
-];
 
 var options = [
-  { value: 'one', label: 'One' },
-  { value: 'two', label: 'Two' },
-  {
-    type: 'group', name: 'group1', items: [
-      { value: 'three', label: 'Three' },
-      { value: 'four', label: 'Four' }
-    ]
-  },
-  {
-    type: 'group', name: 'group2', items: [
-      { value: 'five', label: 'Five' },
-      { value: 'six', label: 'Six' }
-    ]
-  }
+  { value: 'merciless', label: 'merciless' },
+  { value: 'cruel', label: 'cruel' },
+  { value: 'normal', label: 'normal' }
+];
+
+
+var options2 = [
+  { value: '1', label: '1' },
+  { value: '2', label: '2' },
+  { value: '3', label: '3' }
 ];
 
 React.render(
 
-  <CommentBox data={data} options={options}/>,
+  <CommentBox options={options} options2={options2}/>,
   document.getElementById('content')
 );
 </script>
