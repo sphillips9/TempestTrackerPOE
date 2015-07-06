@@ -49,6 +49,6 @@ func main() {
 	http.HandleFunc("/tempest", handleTempests)
 	http.HandleFunc("/es", eventSource)
 	http.Handle("/", http.FileServer(http.Dir("static")))
-	http.ListenAndServe(":555", nil)
+	http.ListenAndServe(":80", nil)
 
 }

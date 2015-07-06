@@ -31,7 +31,42 @@
     </style>
 </head>
 <body>
-<h1>TempestTracker</h1>
+
+<div class="ui fixed inverted menu">
+  <div class="ui container">
+
+      <h3 class="header item">
+        TempestTrackers
+      </h3>
+      <div class ="right menu">
+        <a href="#" class="ui item">Home</a>
+        <a href="#" class="ui simple dropdown item">
+          Dropdown <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item">Link Item</div>
+            <div class="item">Link Item</div>
+            <div class="divider"></div>
+            <div class="header">Header Item</div>
+            <div class="item">
+              <i class="dropdown icon"></i>
+              Sub Menu
+              <div class="menu">
+                <div class="item">Link Item</div>
+                <div class="item">Link Item</div>
+              </div>
+            </div>
+            <div class="item">Link Item</div>
+          </div>
+        </a>
+      </div>
+
+
+
+  </div>
+</div>
+
+
+
 
 <table class ="sortable" id="Tempest" cellspacing="50" cellpadding="10" style="background-color:ghostwhite">
     <thead><tr><th>Type</th><th>Difficulty</th><th>Zone</th><th>Remaining Time</th></tr></thead>
@@ -283,14 +318,11 @@ var TempestItem = React.createClass({
     var mins = remain.getMinutes();
     var str;
 
-    console.log("rendering");
-
     if (mins){
       str = mins + " minutes remaining ";
     }else{
       str = " < 1 minute remaining"
     }
-
 
     return (
 
@@ -357,7 +389,7 @@ var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
 
     var self = this;
-    var es = new EventSource("http://gdf3.com:555/es");
+    var es = new EventSource("http://gdf3.com/es");
     es.onerror=function(e){
       es.close();
     }
@@ -371,12 +403,8 @@ var CommentBox = React.createClass({
         return clone;
       });
 
-
-
       var combined = self.state.data.concat(toAdd);
       console.log("toadd",combined);
-
-
       self.setState({data:combined});
     });
 
@@ -390,7 +418,6 @@ var CommentBox = React.createClass({
     var self=this;
     var now = Date.now();
     var temp = this.state.data.filter(function(t){
-      console.log("queue");
       return (t.expire > now);
     });
 
