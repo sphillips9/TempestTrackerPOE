@@ -3,11 +3,12 @@
 var React = require('react');
 var Dropdown = require('./Dropdown');
 var TempestList = require('./TempestList');
+var TempestSearch = require('./TempestSearch')
 
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return {NEXTID:0, data: [],selectedDifficulty: { value: 'merciless', label: 'merciless'}};
+    return {NEXTID:0, data: [],selectedDifficulty: { value: 'merciless', label: 'merciless'},selectedMap:null};
   },
   loadCommentsFromServer: function() {
 
@@ -48,6 +49,10 @@ module.exports = React.createClass({
     this.setState({data:temp});
 
   },
+  mapFilter:function(e){
+    this.setState({selectedMap:e});
+    console.log(e);
+  },
   render: function() {
     var self=this;
 
@@ -57,16 +62,21 @@ module.exports = React.createClass({
 
     return (
       <div className="tempestApp">
-        <h1>Active Tempests</h1>
-        <div className="ui grid">
-          <div className="eight wide column">
-            <Dropdown options={this.props.options} value={this.state.selectedDifficulty} onChange={this.selectDifficulty}/>
+
+        <TempestSearch options={this.props.mapOptions} setMap={this.mapFilter} selectedMap={this.state.selectedMap}/>
+
+        <div className="ui raised segment">
+          <h1>Active Tempests</h1>
+          <div className="ui grid">
+            <div className="eight wide column">
+              <Dropdown options={this.props.options} value={this.state.selectedDifficulty} onChange={this.selectDifficulty}/>
+            </div>
+            <div className="eight wide column">
+              <Dropdown options={this.props.options2} />
+            </div>
           </div>
-          <div className="eight wide column">
-            <Dropdown options={this.props.options2} />
-          </div>
+          <TempestList data={filtered} />
         </div>
-        <TempestList data={filtered} />
 
       </div>
     );

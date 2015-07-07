@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="semantic.min.css">
 <script src="semantic.min.js"></script>
 <link rel="stylesheet" type="text/css" href="dropdown.css">
+<link rel="stylesheet" type="text/css" href="select.css">
 
     <style>
         body {
@@ -27,12 +28,19 @@
           box-shadow: 4px 5px 8px 0px rgba(0, 0, 0, 0.62), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
         }
         .hidden { display:none; }
+        .icon{
+          font-size:2em;
+        }
+        .widthwidth{
+          width:200px;
+        }
 
     </style>
 </head>
 <body>
 
 <div class="ui fixed inverted menu">
+
   <div class="ui container">
 
       <h3 class="header item">
@@ -40,6 +48,9 @@
       </h3>
       <div class ="right menu">
         <a href="#" class="ui item">Home</a>
+        <a class="ui item" href="#">
+          <i class="add square icon inverted"></i>
+        </a>
         <a href="#" class="ui simple dropdown item">
           Dropdown <i class="dropdown icon"></i>
           <div class="menu">
@@ -69,9 +80,8 @@
 <br>
 <br>
 
+<div id="content" class="ui very padded text container"></div>
 
-
-<div id="content" style="background-color:ghostwhite;" class="ui raised very padded text container segment"></div>
 <script src="bundle.js" type="text/javascript"></script>
 
 

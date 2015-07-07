@@ -16,8 +16,15 @@ var options2 = [
   { value: '3', label: '3' }
 ];
 
+var mapOptions = [
+  { value: 'palace', label: 'palace' },
+  { value: 'courtyard', label: 'courtyard' },
+  { value: 'fetid pool', label: 'fetid pool' }
+
+]
+
 React.render(
 
-  <TempestApp options={options} options2={options2}/>,
+  <TempestApp options={options} options2={options2} mapOptions={mapOptions}/>,
   document.getElementById('content')
 );
