@@ -50,6 +50,17 @@ module.exports =React.createClass({
       partyName = '';
     }
 
+    var ratingClass = '';
+    var rating = this.props.rating + '%';
+
+    if (this.props.rating>=50){
+      ratingClass = 'rating';
+    }else if (this.props.rating>=0){
+      ratingClass = 'rating bad';
+    }else{
+      rating = "";
+    }
+
     return (
       <div className="tempestItem item">
         <div className="ui tiny image">
@@ -90,7 +101,7 @@ module.exports =React.createClass({
               <i className="frown icon"></i>
             </button>
 
-            <span className="rating">{this.props.rating}%</span>
+            <span className={ratingClass}>{rating}</span>
 
 
             </div>
