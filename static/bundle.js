@@ -20993,28 +20993,39 @@
 	            this.props.zone
 	          ), 
 	          React.createElement("div", {className: "meta"}, 
-	            React.createElement("span", null, timeRemaining)
+	            React.createElement("span", null, this.props.prefix, " Tempest of ", this.props.suffix)
 	          ), 
 	          React.createElement("div", {className: "description"}, 
-	          React.createElement("p", null, this.props.prefix, " Tempest of ", this.props.suffix)
+	          React.createElement("p", null, timeRemaining)
 
 	          ), 
 
 	          React.createElement("div", {className: "bottom aligned extra"}, 
 
-	        React.createElement("div", {className: "ui right floated"}, React.createElement("span", {onClick: this.toggleParty}, "Party")), 
+	        React.createElement("div", {className: "ui right floated"}, 
+	          React.createElement("button", {className: "tiny ui basic button", onClick: this.toggleParty}, 
+	            React.createElement("i", {className: "icon user"}), 
+	            "groups"
+	          ), 
+	          React.createElement("div", {className: "floating tiny ui blue label"}, "22")
+	        ), 
 
 	        React.createElement("div", null, 
 
 	          React.createElement("div", null, 
-	            React.createElement("div", {className: "ui label"}, this.props.difficulty), 
-	            React.createElement("div", {className: "ui label"}, this.props.type), 
-	            React.createElement("div", {className: "ui right floated"}, 
-	              React.createElement("img", {src: "blue.png"}), 
-	              React.createElement("img", {src: "blue.png"}), 
-	              React.createElement("img", {src: "blue.png"}), 
-	              React.createElement("img", {src: "blue.png", className: "grayscale"}), 
-	              React.createElement("img", {src: "blue.png", className: "grayscale"})
+
+	            React.createElement("div", {className: "ui"}, 
+	            React.createElement("button", {className: "compact green ui icon basic button"}, 
+	              React.createElement("i", {className: "smile icon"})
+	            ), 
+
+	            React.createElement("button", {className: "compact red ui icon basic button"}, 
+	              React.createElement("i", {className: "frown icon"})
+	            ), 
+
+	            React.createElement("span", {className: "rating"}, "80%")
+
+
 	            )
 	          )
 

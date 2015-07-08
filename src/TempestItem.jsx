@@ -39,28 +39,39 @@ module.exports =React.createClass({
             {this.props.zone}
           </a>
           <div className="meta">
-            <span>{timeRemaining}</span>
+            <span>{this.props.prefix} Tempest of {this.props.suffix}</span>
           </div>
           <div className="description">
-          <p>{this.props.prefix} Tempest of {this.props.suffix}</p>
+          <p>{timeRemaining}</p>
 
           </div>
 
           <div className="bottom aligned extra">
 
-        <div className="ui right floated"><span onClick={this.toggleParty}>Party</span></div>
+        <div className="ui right floated">
+          <button className="tiny ui basic button" onClick={this.toggleParty}>
+            <i className="icon user"></i>
+            groups
+          </button>
+          <div className="floating tiny ui blue label">22</div>
+        </div>
 
         <div>
 
           <div>
-            <div className="ui label">{this.props.difficulty}</div>
-            <div className="ui label">{this.props.type}</div>
-            <div className="ui right floated">
-              <img src="blue.png"/>
-              <img src="blue.png"/>
-              <img src="blue.png"/>
-              <img src="blue.png" className="grayscale"/>
-              <img src="blue.png" className="grayscale"/>
+
+            <div className="ui">
+            <button className="compact green ui icon basic button">
+              <i className="smile icon"></i>
+            </button>
+
+            <button className="compact red ui icon basic button">
+              <i className="frown icon"></i>
+            </button>
+
+            <span className="rating">80%</span>
+
+
             </div>
           </div>
 
