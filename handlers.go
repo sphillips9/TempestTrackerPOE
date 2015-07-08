@@ -16,10 +16,54 @@ func getExpireTime() int64 {
 	return nanos / 1000000
 }
 
+func handleVote(w http.ResponseWriter, req *http.Request) {
+
+	defer req.Body.Close()
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(200)
+
+	switch req.Method {
+	case "POST":
+		buffer, err := ioutil.ReadAll(req.Body)
+		vote := &tempestVote{}
+		err = json.Unmarshal(buffer, &vote)
+
+		if err != nil {
+			return
+		}
+
+		if vote.Rating != 0 && vote.Rating != 1 {
+			return
+		}
+
+		func() {
+
+			tempLock.Lock()
+			defer tempLock.Unlock()
+
+			prefixRatings[vote.Prefix].Votes++
+			prefixRatings[vote.Prefix].Upvotes += vote.Rating
+			suffixRatings[vote.Suffix].Votes++
+			suffixRatings[vote.Suffix].Upvotes += vote.Rating
+
+		}()
+
+		j, err := json.Marshal(vote)
+		update := &UpdatePacket{}
+		update.Event = "RATING"
+		update.Message = string(j)
+
+		hub.Broadcast(update)
+
+	}
+
+}
+
 func handleTempests(w http.ResponseWriter, req *http.Request) {
 
 	defer req.Body.Close()
 	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(200)
 
 	switch req.Method {
 	case "POST":
@@ -27,7 +71,9 @@ func handleTempests(w http.ResponseWriter, req *http.Request) {
 		buffer, err := ioutil.ReadAll(req.Body)
 		tempest := &Tempest{}
 		err = json.Unmarshal(buffer, &tempest)
+
 		if err != nil {
+			return
 			//fmt.Println(err.Error())
 		} else {
 
@@ -40,7 +86,6 @@ func handleTempests(w http.ResponseWriter, req *http.Request) {
 			}()
 
 		}
-		w.WriteHeader(200)
 
 		j, err := json.Marshal(tempest)
 		update := &UpdatePacket{}

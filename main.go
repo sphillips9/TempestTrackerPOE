@@ -17,13 +17,36 @@ type Tempest struct {
 	Suffix     int    `json:"suffix"`
 }
 
+type tempestRating struct {
+	Upvotes int
+	Votes   int
+}
+
+type tempestVote struct {
+	Prefix int
+	Suffix int
+	Rating int
+}
+
 var tempests []*Tempest
 var hub *UserHub
+var prefixRatings []*tempestRating
+var suffixRatings []*tempestRating
 var tempLock sync.Mutex
 
 func init() {
 	hub = &UserHub{}
 	tempests = make([]*Tempest, 0)
+	prefixRatings = make([]*tempestRating, 40)
+	suffixRatings = make([]*tempestRating, 19)
+
+	for i := 0; i < len(prefixRatings); i++ {
+		prefixRatings[i] = &tempestRating{}
+	}
+
+	for i := 0; i < len(suffixRatings); i++ {
+		suffixRatings[i] = &tempestRating{}
+	}
 
 	go func() {
 		tick := time.NewTicker(5 * time.Minute)
@@ -48,6 +71,7 @@ func init() {
 
 func main() {
 
+	http.HandleFunc("/vote", handleVote)
 	http.HandleFunc("/tempest", handleTempests)
 	http.HandleFunc("/es", eventSource)
 	http.Handle("/", http.FileServer(http.Dir("static")))

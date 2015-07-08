@@ -43,6 +43,12 @@ module.exports = React.createClass({
       self.setState({data:combined});
     });
 
+    es.addEventListener("RATING",function(e){
+      var rating = JSON.parse(e.data);
+
+      console.log(rating);
+    });
+
   },
   selectDifficulty:function(option){
 
@@ -104,6 +110,16 @@ module.exports = React.createClass({
 		client.open("POST","http://tempesttrackers.com/tempest");
 		client.send(json);
 
+
+  },
+  postRating:function(e){
+
+    var client = new XMLHttpRequest();
+    var json = JSON.stringify(tempest);
+
+    console.log(tempest,json);
+		client.open("POST","http://tempesttrackers.com/rating");
+		client.send(json);
 
   },
   render: function() {

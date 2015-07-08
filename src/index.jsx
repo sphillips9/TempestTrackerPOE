@@ -80,6 +80,7 @@ var mapOptions = [ { value: 'Crypt', label: 'Crypt' },
   { value: 'Palace', label: 'Palace' },
   { value: 'Courtyard', label: 'Courtyard' } ];
 
+var RATINGMAP = [];
 
 React.render(
 

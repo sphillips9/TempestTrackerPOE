@@ -10,6 +10,25 @@ module.exports =React.createClass({
     var cur = this.state.isPartyOpen;
     this.setState({isPartyOpen:!cur});
   },
+  rateUp:function(){
+    this.postRating(1);
+  },
+  rateDown:function(){
+    this.postRating(0);
+  },
+  postRating:function(rating){
+    var client = new XMLHttpRequest();
+    var rating = {};
+    rating.Prefix = this.props.prefix;
+    rating.Suffix = this.props.suffix;
+    this.Rating = rating;
+
+    var json = JSON.stringify(rating);
+    console.log(rating,json);
+    client.open("POST","http://tempesttrackers.com/vote");
+    client.send(json);
+
+  },
   render: function() {
 
     var dif = this.props.expire - Date.now();
@@ -64,11 +83,11 @@ module.exports =React.createClass({
           <div>
 
             <div className="ui">
-            <button className="compact green ui icon basic button">
+            <button className="compact green ui icon basic button" onClick={this.RateUp}>
               <i className="smile icon"></i>
             </button>
 
-            <button className="compact red ui icon basic button">
+            <button className="compact red ui icon basic button" onClick={this.RateDown}>
               <i className="frown icon"></i>
             </button>
 

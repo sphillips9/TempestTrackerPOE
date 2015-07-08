@@ -126,6 +126,7 @@
 	  { value: 'Palace', label: 'Palace' },
 	  { value: 'Courtyard', label: 'Courtyard' } ];
 
+	var RATINGMAP = [];
 
 	React.render(
 
@@ -20564,6 +20565,12 @@
 	      self.setState({data:combined});
 	    });
 
+	    es.addEventListener("RATING",function(e){
+	      var rating = JSON.parse(e.data);
+
+	      console.log(rating);
+	    });
+
 	  },
 	  selectDifficulty:function(option){
 
@@ -20625,6 +20632,16 @@
 			client.open("POST","http://tempesttrackers.com/tempest");
 			client.send(json);
 
+
+	  },
+	  postRating:function(e){
+
+	    var client = new XMLHttpRequest();
+	    var json = JSON.stringify(tempest);
+
+	    console.log(tempest,json);
+			client.open("POST","http://tempesttrackers.com/rating");
+			client.send(json);
 
 	  },
 	  render: function() {
@@ -20978,6 +20995,25 @@
 	    var cur = this.state.isPartyOpen;
 	    this.setState({isPartyOpen:!cur});
 	  },
+	  rateUp:function(){
+	    this.postRating(1);
+	  },
+	  rateDown:function(){
+	    this.postRating(0);
+	  },
+	  postRating:function(rating){
+	    var client = new XMLHttpRequest();
+	    var rating = {};
+	    rating.Prefix = this.props.prefix;
+	    rating.Suffix = this.props.suffix;
+	    this.Rating = rating;
+
+	    var json = JSON.stringify(rating);
+	    console.log(rating,json);
+	    client.open("POST","http://tempesttrackers.com/vote");
+	    client.send(json);
+
+	  },
 	  render: function() {
 
 	    var dif = this.props.expire - Date.now();
@@ -21032,11 +21068,11 @@
 	          React.createElement("div", null, 
 
 	            React.createElement("div", {className: "ui"}, 
-	            React.createElement("button", {className: "compact green ui icon basic button"}, 
+	            React.createElement("button", {className: "compact green ui icon basic button", onClick: this.RateUp}, 
 	              React.createElement("i", {className: "smile icon"})
 	            ), 
 
-	            React.createElement("button", {className: "compact red ui icon basic button"}, 
+	            React.createElement("button", {className: "compact red ui icon basic button", onClick: this.RateDown}, 
 	              React.createElement("i", {className: "frown icon"})
 	            ), 
 
