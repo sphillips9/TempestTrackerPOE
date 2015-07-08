@@ -92,7 +92,14 @@ module.exports = React.createClass({
       selectedDuration:60
     });
 
-    console.log(tempest);
+    var client = new XMLHttpRequest();
+    var json = JSON.stringify(tempest);
+
+    console.log(json);
+		client.open("POST","http://tempesttrackers.com/tempest");
+		client.send(json);
+
+
   },
   render: function() {
     var self=this;
@@ -103,8 +110,6 @@ module.exports = React.createClass({
       }else{
         return (t.zone.toLowerCase()==self.state.selectedMap.toLowerCase());
       }
-    }).filter(function(t){
-      return (t.difficulty.toLowerCase()===self.state.selectedDifficulty.value);
     });
 
     return (
