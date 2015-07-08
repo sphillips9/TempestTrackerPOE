@@ -24,7 +24,6 @@ module.exports =React.createClass({
     rating.Rating = vote;
 
     var json = JSON.stringify(rating);
-    console.log(rating,json);
     client.open("POST","http://tempesttrackers.com/vote");
     client.send(json);
 

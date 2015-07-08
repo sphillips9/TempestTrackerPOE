@@ -60,6 +60,11 @@ module.exports = React.createClass({
     es.addEventListener("INITRATING",function(e){
       var ratings = JSON.parse(e.data);
 
+      self.setState({
+        prefixRatings:ratings.PrefixRatings,
+        suffixRatings:ratings.SuffixRatings
+      });
+
     });
 
     es.addEventListener("RATING",function(e){
@@ -76,7 +81,6 @@ module.exports = React.createClass({
       });
 
       self.setState({prefixRatings:prefixRatings, suffixRatings:suffixRatings});
-      console.log(rating);
     });
 
   },

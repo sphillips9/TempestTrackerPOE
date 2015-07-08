@@ -20579,6 +20579,16 @@
 	      self.setState({data:combined});
 	    });
 
+	    es.addEventListener("INITRATING",function(e){
+	      var ratings = JSON.parse(e.data);
+
+	      self.setState({
+	        prefixRatings:ratings.PrefixRatings,
+	        suffixRatings:ratings.SuffixRatings
+	      });
+
+	    });
+
 	    es.addEventListener("RATING",function(e){
 	      var ratings = JSON.parse(e.data);
 
@@ -20593,7 +20603,6 @@
 	      });
 
 	      self.setState({prefixRatings:prefixRatings, suffixRatings:suffixRatings});
-	      console.log(rating);
 	    });
 
 	  },
@@ -21048,7 +21057,6 @@
 	    rating.Rating = vote;
 
 	    var json = JSON.stringify(rating);
-	    console.log(rating,json);
 	    client.open("POST","http://tempesttrackers.com/vote");
 	    client.send(json);
 
