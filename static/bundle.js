@@ -20535,6 +20535,7 @@
 	      selectedDifficulty: { value: 'merciless', label: 'merciless'},
 	      selectedMap:'',
 	      isAddOpen:false,
+	      isFiltersOpen:false,
 	      selectedSuffix:'',
 	      selectedPrefix:'',
 	      selectedDuration:60
@@ -20599,6 +20600,10 @@
 	    console.log("toggle open");
 	    this.setState({isAddOpen:!this.state.isAddOpen});
 	  },
+	  toggleFiltersOpen:function(e){
+	    console.log("toggle filters");
+	    this.setState({isFiltersOpen:!this.state.isFiltersOpen});
+	  },
 	  postTempest:function(e){
 	    var tempest = {};
 	    tempest.zone = this.state.selectedMap;
@@ -20633,6 +20638,12 @@
 	      }
 	    });
 
+	    var isFiltersOpen = 'hidden';
+
+	    if (self.state.isFiltersOpen){
+	      isFiltersOpen='';
+	    }
+
 	    return (
 	      React.createElement("div", {className: "tempestApp"}, 
 
@@ -20654,15 +20665,18 @@
 	        ), 
 
 	        React.createElement("div", {className: "ui raised segment"}, 
-	          React.createElement("h1", null, "Active Tempests"), 
-	          React.createElement("div", {className: "ui grid"}, 
-	            React.createElement("div", {className: "eight wide column"}, 
-	              React.createElement(Dropdown, {options: this.props.options, value: this.state.selectedDifficulty, onChange: this.selectDifficulty})
-	            ), 
-	            React.createElement("div", {className: "eight wide column"}, 
-	              React.createElement(Dropdown, {options: this.props.options2})
-	            )
+
+	          React.createElement("button", {className: "ui tiny compact basic button", onClick: this.toggleFiltersOpen}, 
+	            React.createElement("i", {className: "dropdown icon"}), 
+	            "Filters"
 	          ), 
+
+	          React.createElement("div", {className: isFiltersOpen}, 
+	            "sort by"
+	          ), 
+
+	          React.createElement("div", {className: "ui divider"}), 
+
 	          React.createElement(TempestList, {data: filtered})
 	        )
 

@@ -14,6 +14,7 @@ module.exports = React.createClass({
       selectedDifficulty: { value: 'merciless', label: 'merciless'},
       selectedMap:'',
       isAddOpen:false,
+      isFiltersOpen:false,
       selectedSuffix:'',
       selectedPrefix:'',
       selectedDuration:60
@@ -78,6 +79,10 @@ module.exports = React.createClass({
     console.log("toggle open");
     this.setState({isAddOpen:!this.state.isAddOpen});
   },
+  toggleFiltersOpen:function(e){
+    console.log("toggle filters");
+    this.setState({isFiltersOpen:!this.state.isFiltersOpen});
+  },
   postTempest:function(e){
     var tempest = {};
     tempest.zone = this.state.selectedMap;
@@ -112,6 +117,12 @@ module.exports = React.createClass({
       }
     });
 
+    var isFiltersOpen = 'hidden';
+
+    if (self.state.isFiltersOpen){
+      isFiltersOpen='';
+    }
+
     return (
       <div className="tempestApp">
 
@@ -133,15 +144,18 @@ module.exports = React.createClass({
         />
 
         <div className="ui raised segment">
-          <h1>Active Tempests</h1>
-          <div className="ui grid">
-            <div className="eight wide column">
-              <Dropdown options={this.props.options} value={this.state.selectedDifficulty} onChange={this.selectDifficulty}/>
-            </div>
-            <div className="eight wide column">
-              <Dropdown options={this.props.options2} />
-            </div>
+
+          <button className="ui tiny compact basic button"  onClick={this.toggleFiltersOpen}>
+            <i className="dropdown icon"></i>
+            Filters
+          </button>
+
+          <div className={isFiltersOpen}>
+            sort by
           </div>
+
+          <div className="ui divider"></div>
+
           <TempestList data={filtered} />
         </div>
 
