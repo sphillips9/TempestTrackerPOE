@@ -20926,8 +20926,11 @@
 	       difficulty: tempest.difficulty, 
 	       zone: tempest.zone, 
 	       expire: tempest.expire, 
-	       key: tempest.id}
+	       key: tempest.id, 
+	       prefix: tempest.prefix, 
+	       suffix: tempest.suffix}
 	       )
+
 	     );
 	   });
 
@@ -20988,9 +20991,7 @@
 	            React.createElement("span", null, timeRemaining)
 	          ), 
 	          React.createElement("div", {className: "description"}, 
-	          React.createElement("p", null, 
-	              "Description Of Tempest"
-	          )
+	          React.createElement("p", null, this.props.prefix, " Tempest of ", this.props.suffix)
 
 	          ), 
 
