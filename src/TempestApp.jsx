@@ -208,6 +208,7 @@ module.exports = React.createClass({
             data={filtered}
             prefixRatings={this.state.prefixRatings}
             suffixRatings={this.state.suffixRatings}
+            tempestParties={this.state.tempestParties}
           />
         </div>
 

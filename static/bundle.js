@@ -20729,7 +20729,8 @@
 	          React.createElement(TempestList, {
 	            data: filtered, 
 	            prefixRatings: this.state.prefixRatings, 
-	            suffixRatings: this.state.suffixRatings}
+	            suffixRatings: this.state.suffixRatings, 
+	            tempestParties: this.state.tempestParties}
 	          )
 	        )
 
@@ -20990,6 +20991,7 @@
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
+	    var self = this;
 	    var prefixRatings = this.props.prefixRatings;
 	    var suffixRatings = this.props.suffixRatings;
 
@@ -21024,10 +21026,12 @@
 	         difficulty: tempest.difficulty, 
 	         zone: tempest.zone, 
 	         expire: tempest.expire, 
-	         key: tempest.id, 
+	         key: tempest.Id, 
+	         tempestId: tempest.Id, 
 	         prefix: prefix, 
 	         suffix: suffix, 
-	         rating: rating}
+	         rating: rating, 
+	         tempestParties: self.props.tempestParties}
 	         )
 	       );
 
@@ -21077,7 +21081,7 @@
 
 	  },
 	  render: function() {
-
+	    var self = this;
 	    var dif = this.props.expire - Date.now();
 	    var remain = new Date(dif);
 	    var mins = remain.getMinutes();
@@ -21093,9 +21097,26 @@
 	    }
 
 	    var partyName = 'hidden';
+	    var tempestParties = null;
+
+	    var matchingParties = this.props.tempestParties.filter(function(party){
+	      return party.TempestId === self.props.tempestId;
+	    });
 
 	    if (this.state.isPartyOpen){
 	      partyName = '';
+	      tempestParties = matchingParties.map(function(party,index){
+	        return (
+	          React.createElement("div", {className: "item", key: party.TempestId+index}, 
+	            React.createElement("div", {className: "content"}, 
+	              React.createElement("a", {className: "header"}, party.IGN), 
+	              React.createElement("div", {className: "description"}, party.Text)
+	            )
+	          )
+	        )
+	      });
+
+
 	    }
 
 	    var ratingClass = '';
@@ -21133,7 +21154,7 @@
 	            React.createElement("i", {className: "icon user"}), 
 	            "groups"
 	          ), 
-	          React.createElement("div", {className: "floating tiny ui blue label"}, "22")
+	          React.createElement("div", {className: "floating tiny ui blue label"}, matchingParties.length)
 	        ), 
 
 	        React.createElement("div", null, 
@@ -21158,12 +21179,9 @@
 	        ), 
 
 	        React.createElement("div", {className: partyName}, 
-	        React.createElement("ul", null, 
-	        React.createElement("li", null, "Party1"), 
-	        React.createElement("li", null, "party2"), 
-	        React.createElement("li", null, "party3")
-	        )
-
+	          React.createElement("div", {className: "ui relaxed divided list"}, 
+	            tempestParties
+	          )
 	        )
 
 

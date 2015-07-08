@@ -29,7 +29,7 @@ module.exports =React.createClass({
 
   },
   render: function() {
-
+    var self = this;
     var dif = this.props.expire - Date.now();
     var remain = new Date(dif);
     var mins = remain.getMinutes();
@@ -45,9 +45,26 @@ module.exports =React.createClass({
     }
 
     var partyName = 'hidden';
+    var tempestParties = null;
+
+    var matchingParties = this.props.tempestParties.filter(function(party){
+      return party.TempestId === self.props.tempestId;
+    });
 
     if (this.state.isPartyOpen){
       partyName = '';
+      tempestParties = matchingParties.map(function(party,index){
+        return (
+          <div className="item" key={party.TempestId+index}>
+            <div className="content">
+              <a className="header">{party.IGN}</a>
+              <div className="description">{party.Text}</div>
+            </div>
+          </div>
+        )
+      });
+
+
     }
 
     var ratingClass = '';
@@ -85,7 +102,7 @@ module.exports =React.createClass({
             <i className="icon user"></i>
             groups
           </button>
-          <div className="floating tiny ui blue label">22</div>
+          <div className="floating tiny ui blue label">{matchingParties.length}</div>
         </div>
 
         <div>
@@ -110,12 +127,9 @@ module.exports =React.createClass({
         </div>
 
         <div className={partyName}>
-        <ul>
-        <li>Party1</li>
-        <li>party2</li>
-        <li>party3</li>
-        </ul>
-
+          <div className="ui relaxed divided list">
+            {tempestParties}
+          </div>
         </div>
 
 

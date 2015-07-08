@@ -5,6 +5,7 @@ var TempestItem = require('./TempestItem');
 
 module.exports = React.createClass({
   render: function() {
+    var self = this;
     var prefixRatings = this.props.prefixRatings;
     var suffixRatings = this.props.suffixRatings;
 
@@ -39,10 +40,12 @@ module.exports = React.createClass({
          difficulty={tempest.difficulty}
          zone={tempest.zone}
          expire={tempest.expire}
-         key={tempest.id}
+         key={tempest.Id}
+         tempestId={tempest.Id}
          prefix={prefix}
          suffix={suffix}
          rating={rating}
+         tempestParties={self.props.tempestParties}
          />
        );
 
