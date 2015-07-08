@@ -28,6 +28,11 @@ type tempestVote struct {
 	Rating int
 }
 
+type currentRatings struct {
+	PrefixRatings []*tempestRating
+	SuffixRatings []*tempestRating
+}
+
 var tempests []*Tempest
 var hub *UserHub
 var prefixRatings []*tempestRating

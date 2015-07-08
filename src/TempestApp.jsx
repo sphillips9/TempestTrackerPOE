@@ -8,6 +8,18 @@ var TempestSearch = require('./TempestSearch')
 
 module.exports = React.createClass({
   getInitialState: function() {
+
+    var prefixRatings = [];
+    var suffixRatings = [];
+
+    for(var i = 0;i<40;i++){
+      prefixRatings[i]={Upvotes:0,Votes:0};
+    }
+
+    for(var i = 0;i<19;i++){
+      suffixRatings[i]={Upvotes:0,Votes:0};
+    }
+
     return {
       NEXTID:0,
       data: [],
@@ -17,7 +29,9 @@ module.exports = React.createClass({
       isFiltersOpen:false,
       selectedSuffix:'',
       selectedPrefix:'',
-      selectedDuration:60
+      selectedDuration:60,
+      prefixRatings:prefixRatings,
+      suffixRatings:suffixRatings
       };
   },
   loadCommentsFromServer: function() {
@@ -43,9 +57,25 @@ module.exports = React.createClass({
       self.setState({data:combined});
     });
 
-    es.addEventListener("RATING",function(e){
-      var rating = JSON.parse(e.data);
+    es.addEventListener("INITRATING",function(e){
+      var ratings = JSON.parse(e.data);
 
+    });
+
+    es.addEventListener("RATING",function(e){
+      var ratings = JSON.parse(e.data);
+
+      var suffixRatings = self.state.suffixRatings;
+      var prefixRatings = self.state.prefixRatings;
+
+      [].concat(ratings).forEach(function(rating){
+        suffixRatings[rating.Suffix].Upvotes+=rating.Rating;
+        suffixRatings[rating.Suffix].Votes++;
+        prefixRatings[rating.Prefix].Upvotes+=rating.Rating;
+        prefixRatings[rating.Prefix].Votes++;
+      });
+
+      self.setState({prefixRatings:prefixRatings, suffixRatings:suffixRatings});
       console.log(rating);
     });
 
@@ -112,16 +142,6 @@ module.exports = React.createClass({
 
 
   },
-  postRating:function(e){
-
-    var client = new XMLHttpRequest();
-    var json = JSON.stringify(tempest);
-
-    console.log(tempest,json);
-		client.open("POST","http://tempesttrackers.com/rating");
-		client.send(json);
-
-  },
   render: function() {
     var self=this;
 
@@ -172,7 +192,11 @@ module.exports = React.createClass({
 
           <div className="ui divider"></div>
 
-          <TempestList data={filtered} />
+          <TempestList
+            data={filtered}
+            prefixRatings={this.state.prefixRatings}
+            suffixRatings={this.state.suffixRatings}
+          />
         </div>
 
       </div>

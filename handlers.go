@@ -131,14 +131,27 @@ func eventSource(w http.ResponseWriter, req *http.Request) {
 		tempLock.Lock()
 		defer tempLock.Unlock()
 
-		j, err := json.Marshal(tempests)
+		tj, err := json.Marshal(tempests)
 
-		if err == nil {
-
-			rw.Write([]byte("event: " + "TEMPEST" + "\n"))
-			rw.Write([]byte("data: " + string(j) + "\n\n"))
-			rw.Flush()
+		if err != nil {
+			return
 		}
+
+		ratings := &currentRatings{}
+		ratings.PrefixRatings = prefixRatings
+		ratings.SuffixRatings = suffixRatings
+
+		rj, err := json.Marshal(ratings)
+
+		if err != nil {
+			return
+		}
+
+		rw.Write([]byte("event: " + "TEMPEST" + "\n"))
+		rw.Write([]byte("data: " + string(tj) + "\n\n"))
+		rw.Write([]byte("event: " + "INITRATING" + "\n"))
+		rw.Write([]byte("data: " + string(rj) + "\n\n"))
+		rw.Flush()
 
 	}()
 

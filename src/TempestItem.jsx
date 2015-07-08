@@ -16,12 +16,12 @@ module.exports =React.createClass({
   rateDown:function(){
     this.postRating(0);
   },
-  postRating:function(rating){
+  postRating:function(vote){
     var client = new XMLHttpRequest();
     var rating = {};
     rating.Prefix = this.props.prefix;
     rating.Suffix = this.props.suffix;
-    this.Rating = rating;
+    rating.Rating = vote;
 
     var json = JSON.stringify(rating);
     console.log(rating,json);
@@ -83,15 +83,15 @@ module.exports =React.createClass({
           <div>
 
             <div className="ui">
-            <button className="compact green ui icon basic button" onClick={this.RateUp}>
+            <button className="compact green ui icon basic button" onClick={this.rateUp}>
               <i className="smile icon"></i>
             </button>
 
-            <button className="compact red ui icon basic button" onClick={this.RateDown}>
+            <button className="compact red ui icon basic button" onClick={this.rateDown}>
               <i className="frown icon"></i>
             </button>
 
-            <span className="rating">80%</span>
+            <span className="rating">{this.props.rating}%</span>
 
 
             </div>

@@ -20530,6 +20530,18 @@
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  getInitialState: function() {
+
+	    var prefixRatings = [];
+	    var suffixRatings = [];
+
+	    for(var i = 0;i<40;i++){
+	      prefixRatings[i]={Upvotes:0,Votes:0};
+	    }
+
+	    for(var i = 0;i<19;i++){
+	      suffixRatings[i]={Upvotes:0,Votes:0};
+	    }
+
 	    return {
 	      NEXTID:0,
 	      data: [],
@@ -20539,7 +20551,9 @@
 	      isFiltersOpen:false,
 	      selectedSuffix:'',
 	      selectedPrefix:'',
-	      selectedDuration:60
+	      selectedDuration:60,
+	      prefixRatings:prefixRatings,
+	      suffixRatings:suffixRatings
 	      };
 	  },
 	  loadCommentsFromServer: function() {
@@ -20566,8 +20580,19 @@
 	    });
 
 	    es.addEventListener("RATING",function(e){
-	      var rating = JSON.parse(e.data);
+	      var ratings = JSON.parse(e.data);
 
+	      var suffixRatings = self.state.suffixRatings;
+	      var prefixRatings = self.state.prefixRatings;
+
+	      [].concat(ratings).forEach(function(rating){
+	        suffixRatings[rating.Suffix].Upvotes+=rating.Rating;
+	        suffixRatings[rating.Suffix].Votes++;
+	        prefixRatings[rating.Prefix].Upvotes+=rating.Rating;
+	        prefixRatings[rating.Prefix].Votes++;
+	      });
+
+	      self.setState({prefixRatings:prefixRatings, suffixRatings:suffixRatings});
 	      console.log(rating);
 	    });
 
@@ -20634,16 +20659,6 @@
 
 
 	  },
-	  postRating:function(e){
-
-	    var client = new XMLHttpRequest();
-	    var json = JSON.stringify(tempest);
-
-	    console.log(tempest,json);
-			client.open("POST","http://tempesttrackers.com/rating");
-			client.send(json);
-
-	  },
 	  render: function() {
 	    var self=this;
 
@@ -20694,7 +20709,11 @@
 
 	          React.createElement("div", {className: "ui divider"}), 
 
-	          React.createElement(TempestList, {data: filtered})
+	          React.createElement(TempestList, {
+	            data: filtered, 
+	            prefixRatings: this.state.prefixRatings, 
+	            suffixRatings: this.state.suffixRatings}
+	          )
 	        )
 
 	      )
@@ -20954,8 +20973,27 @@
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
+	    var prefixRatings = this.props.prefixRatings;
+	    var suffixRatings = this.props.suffixRatings;
 
 	    var tempestNodes = this.props.data.map(function (tempest) {
+
+	    var prefix=tempest.prefix;
+	    var suffix=tempest.suffix;
+
+	    var pr =0;
+	    var sr = 0;
+
+	    if (prefixRatings[prefix].Votes > 0){
+	      pr = prefixRatings[prefix].Upvotes/prefixRatings[prefix].Votes;
+	    }
+
+	    if (suffixRatings[suffix].Votes>0){
+	      sr = suffixRatings[suffix].Upvotes/suffixRatings[suffix].Votes;
+	    }
+
+	    var rating = (50*(pr + sr))|0;
+
 	     return (
 	       React.createElement(TempestItem, {
 	       type: tempest.type, 
@@ -20963,8 +21001,9 @@
 	       zone: tempest.zone, 
 	       expire: tempest.expire, 
 	       key: tempest.id, 
-	       prefix: tempest.prefix, 
-	       suffix: tempest.suffix}
+	       prefix: prefix, 
+	       suffix: suffix, 
+	       rating: rating}
 	       )
 
 	     );
@@ -21001,12 +21040,12 @@
 	  rateDown:function(){
 	    this.postRating(0);
 	  },
-	  postRating:function(rating){
+	  postRating:function(vote){
 	    var client = new XMLHttpRequest();
 	    var rating = {};
 	    rating.Prefix = this.props.prefix;
 	    rating.Suffix = this.props.suffix;
-	    this.Rating = rating;
+	    rating.Rating = vote;
 
 	    var json = JSON.stringify(rating);
 	    console.log(rating,json);
@@ -21068,15 +21107,15 @@
 	          React.createElement("div", null, 
 
 	            React.createElement("div", {className: "ui"}, 
-	            React.createElement("button", {className: "compact green ui icon basic button", onClick: this.RateUp}, 
+	            React.createElement("button", {className: "compact green ui icon basic button", onClick: this.rateUp}, 
 	              React.createElement("i", {className: "smile icon"})
 	            ), 
 
-	            React.createElement("button", {className: "compact red ui icon basic button", onClick: this.RateDown}, 
+	            React.createElement("button", {className: "compact red ui icon basic button", onClick: this.rateDown}, 
 	              React.createElement("i", {className: "frown icon"})
 	            ), 
 
-	            React.createElement("span", {className: "rating"}, "80%")
+	            React.createElement("span", {className: "rating"}, this.props.rating, "%")
 
 
 	            )
