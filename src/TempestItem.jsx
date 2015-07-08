@@ -47,6 +47,8 @@ module.exports =React.createClass({
     var partyName = 'hidden';
     var tempestParties = null;
 
+    console.log("thistempest", this.props.tempestParties);
+
     var matchingParties = this.props.tempestParties.filter(function(party){
       return party.TempestId === self.props.tempestId;
     });

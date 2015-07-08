@@ -51,6 +51,7 @@ var nextTempestId int
 func init() {
 	hub = &UserHub{}
 	tempests = make([]*Tempest, 0)
+	tempestParties = make([]*tempestParty, 0)
 	prefixRatings = make([]*tempestRating, 40)
 	suffixRatings = make([]*tempestRating, 19)
 	nextTempestId = 1234
