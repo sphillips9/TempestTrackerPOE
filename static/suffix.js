@@ -1,4 +1,4 @@
-var suffixes =
+var SUFFIXMAP =
 ["Animation",
 "the Ancestors",
 "Fire",
@@ -19,6 +19,6 @@ var suffixes =
 "Destiny",
 "Fate"];
 
-suffixes=suffixes.map(function(p){
-  return {value:p,label:p};
+var suffixes=SUFFIXMAP.map(function(p,index){
+  return {value:index,label:p};
 });

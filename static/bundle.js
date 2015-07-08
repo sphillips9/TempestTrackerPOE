@@ -20584,13 +20584,13 @@
 	    this.setState({selectedMap:e});
 	    console.log(e,e.length);
 	  },
-	  setPrefix:function(e){
-	    this.setState({selectedPrefix:e});
-	    console.log(e);
+	  setPrefix:function(e,o){
+	    this.setState({selectedPrefix:e|0});
+	    console.log(e,o);
 	  },
-	  setSuffix:function(e){
-	    this.setState({selectedSuffix:e});
-	    console.log(e);
+	  setSuffix:function(e,o){
+	    this.setState({selectedSuffix:e|0});
+	    console.log(e,o);
 	  },
 	  setDuration:function(e){
 	    this.setState({selectedDuration:e.target.value});
@@ -20621,7 +20621,7 @@
 	    var client = new XMLHttpRequest();
 	    var json = JSON.stringify(tempest);
 
-	    console.log(json);
+	    console.log(tempest,json);
 			client.open("POST","http://tempesttrackers.com/tempest");
 			client.send(json);
 
@@ -20985,6 +20985,9 @@
 	    var mins = remain.getMinutes();
 	    var timeRemaining;
 
+	    var prefix = PREFIXMAP[this.props.prefix];
+	    var suffix = SUFFIXMAP[this.props.suffix];
+
 	    if (mins){
 	      timeRemaining = mins + " minutes remaining ";
 	    }else{
@@ -21007,7 +21010,7 @@
 	            this.props.zone
 	          ), 
 	          React.createElement("div", {className: "meta"}, 
-	            React.createElement("span", null, this.props.prefix, " Tempest of ", this.props.suffix)
+	            React.createElement("span", null, prefix, " Tempest of ", suffix)
 	          ), 
 	          React.createElement("div", {className: "description"}, 
 	          React.createElement("p", null, timeRemaining)
@@ -21094,6 +21097,8 @@
 	      addTempestClass = '';
 	    }
 
+	    var currentPrefix = {value:this.props.selectedPrefix, label:PREFIXMAP[this.props.selectedPrefix]};
+	    var currentSuffix = {value:this.props.selectedSuffix, label:SUFFIXMAP[this.props.selectedSuffix]};
 
 	    return(
 	    React.createElement("div", {className: "tempestSearch"}, 
@@ -21134,7 +21139,7 @@
 	          name: "tempest-prefix", 
 	          options: this.props.prefixes, 
 	          onChange: this.props.setPrefix, 
-	          value: this.props.selectedPrefix}
+	          value: currentPrefix}
 	        ), 
 
 	        React.createElement("label", null, "Tempest Suffix"), 
@@ -21142,7 +21147,7 @@
 	          name: "tempest-suffix", 
 	          options: this.props.suffixes, 
 	          onChange: this.props.setSuffix, 
-	          value: this.props.selectedSuffix}
+	          value: currentSuffix}
 	        ), 
 
 	        React.createElement("div", {className: "ui form"}, 

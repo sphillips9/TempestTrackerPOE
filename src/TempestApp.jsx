@@ -63,13 +63,13 @@ module.exports = React.createClass({
     this.setState({selectedMap:e});
     console.log(e,e.length);
   },
-  setPrefix:function(e){
-    this.setState({selectedPrefix:e});
-    console.log(e);
+  setPrefix:function(e,o){
+    this.setState({selectedPrefix:e|0});
+    console.log(e,o);
   },
-  setSuffix:function(e){
-    this.setState({selectedSuffix:e});
-    console.log(e);
+  setSuffix:function(e,o){
+    this.setState({selectedSuffix:e|0});
+    console.log(e,o);
   },
   setDuration:function(e){
     this.setState({selectedDuration:e.target.value});
@@ -100,7 +100,7 @@ module.exports = React.createClass({
     var client = new XMLHttpRequest();
     var json = JSON.stringify(tempest);
 
-    console.log(json);
+    console.log(tempest,json);
 		client.open("POST","http://tempesttrackers.com/tempest");
 		client.send(json);
 

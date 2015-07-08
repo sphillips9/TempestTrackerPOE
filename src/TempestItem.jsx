@@ -17,6 +17,9 @@ module.exports =React.createClass({
     var mins = remain.getMinutes();
     var timeRemaining;
 
+    var prefix = PREFIXMAP[this.props.prefix];
+    var suffix = SUFFIXMAP[this.props.suffix];
+
     if (mins){
       timeRemaining = mins + " minutes remaining ";
     }else{
@@ -39,7 +42,7 @@ module.exports =React.createClass({
             {this.props.zone}
           </a>
           <div className="meta">
-            <span>{this.props.prefix} Tempest of {this.props.suffix}</span>
+            <span>{prefix} Tempest of {suffix}</span>
           </div>
           <div className="description">
           <p>{timeRemaining}</p>

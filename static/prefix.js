@@ -1,4 +1,4 @@
-var prefixes =
+var PREFIXMAP =
 ["Stinging",
 "Scathing",
 "Restorative",
@@ -40,6 +40,6 @@ var prefixes =
 "Refining",
 "Energising"];
 
-prefixes=prefixes.map(function(p){
-  return {value:p,label:p};
+var prefixes=PREFIXMAP.map(function(p,index){
+  return {value:index,label:p};
 });

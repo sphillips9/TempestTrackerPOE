@@ -21,6 +21,8 @@ module.exports = React.createClass({
       addTempestClass = '';
     }
 
+    var currentPrefix = {value:this.props.selectedPrefix, label:PREFIXMAP[this.props.selectedPrefix]};
+    var currentSuffix = {value:this.props.selectedSuffix, label:SUFFIXMAP[this.props.selectedSuffix]};
 
     return(
     <div className="tempestSearch">
@@ -61,7 +63,7 @@ module.exports = React.createClass({
           name="tempest-prefix"
           options={this.props.prefixes}
           onChange={this.props.setPrefix}
-          value={this.props.selectedPrefix}
+          value={currentPrefix}
         />
 
         <label>Tempest Suffix</label>
@@ -69,7 +71,7 @@ module.exports = React.createClass({
           name="tempest-suffix"
           options={this.props.suffixes}
           onChange={this.props.setSuffix}
-          value={this.props.selectedSuffix}
+          value={currentSuffix}
         />
 
         <div className="ui form">
