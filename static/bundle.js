@@ -129,7 +129,13 @@
 
 	React.render(
 
-	  React.createElement(TempestApp, {options: options, options2: options2, mapOptions: mapOptions}),
+	  React.createElement(TempestApp, {
+	  options: options, 
+	  options2: options2, 
+	  mapOptions: mapOptions, 
+	  prefixes: prefixes, 
+	  suffixes: suffixes}
+	  ),
 	  document.getElementById('content')
 	);
 
@@ -20527,10 +20533,10 @@
 	      NEXTID:0,
 	      data: [],
 	      selectedDifficulty: { value: 'merciless', label: 'merciless'},
-	      selectedMap:null,
+	      selectedMap:'',
 	      isAddOpen:false,
-	      selectedSuffix:null,
-	      selectedPrefix:null,
+	      selectedSuffix:'',
+	      selectedPrefix:'',
 	      selectedDuration:60
 	      };
 	  },
@@ -20575,7 +20581,7 @@
 	  },
 	  setMap:function(e){
 	    this.setState({selectedMap:e});
-	    console.log(e);
+	    console.log(e,e.length);
 	  },
 	  setPrefix:function(e){
 	    this.setState({selectedPrefix:e});
@@ -20602,8 +20608,8 @@
 
 	    this.setState({
 	      isAddOpen:false,
-	      selectedPrefix:null,
-	      selectedSuffix:null,
+	      selectedPrefix:'',
+	      selectedSuffix:'',
 	      selectedDuration:60
 	    });
 
@@ -20613,6 +20619,12 @@
 	    var self=this;
 
 	    var filtered = this.state.data.filter(function(t){
+	      if (self.state.selectedMap === ''){
+	        return true;
+	      }else{
+	        return (t.zone.toLowerCase()==self.state.selectedMap.toLowerCase());
+	      }
+	    }).filter(function(t){
 	      return (t.difficulty.toLowerCase()===self.state.selectedDifficulty.value);
 	    });
 
@@ -20621,6 +20633,8 @@
 
 	        React.createElement(TempestSearch, {
 	          options: this.props.mapOptions, 
+	          prefixes: this.props.prefixes, 
+	          suffixes: this.props.suffixes, 
 	          setMap: this.setMap, 
 	          setPrefix: this.setPrefix, 
 	          setSuffix: this.setSuffix, 
@@ -21083,7 +21097,7 @@
 	        React.createElement("label", null, "Tempest Prefix"), 
 	        React.createElement(Select, {
 	          name: "tempest-prefix", 
-	          options: this.props.options, 
+	          options: this.props.prefixes, 
 	          onChange: this.props.setPrefix, 
 	          value: this.props.selectedPrefix}
 	        ), 
@@ -21091,7 +21105,7 @@
 	        React.createElement("label", null, "Tempest Suffix"), 
 	        React.createElement(Select, {
 	          name: "tempest-suffix", 
-	          options: this.props.options, 
+	          options: this.props.suffixes, 
 	          onChange: this.props.setSuffix, 
 	          value: this.props.selectedSuffix}
 	        ), 

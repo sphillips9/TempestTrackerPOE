@@ -59,7 +59,7 @@ module.exports = React.createClass({
         <label>Tempest Prefix</label>
         <Select
           name="tempest-prefix"
-          options={this.props.options}
+          options={this.props.prefixes}
           onChange={this.props.setPrefix}
           value={this.props.selectedPrefix}
         />
@@ -67,7 +67,7 @@ module.exports = React.createClass({
         <label>Tempest Suffix</label>
         <Select
           name="tempest-suffix"
-          options={this.props.options}
+          options={this.props.suffixes}
           onChange={this.props.setSuffix}
           value={this.props.selectedSuffix}
         />

@@ -12,10 +12,10 @@ module.exports = React.createClass({
       NEXTID:0,
       data: [],
       selectedDifficulty: { value: 'merciless', label: 'merciless'},
-      selectedMap:null,
+      selectedMap:'',
       isAddOpen:false,
-      selectedSuffix:null,
-      selectedPrefix:null,
+      selectedSuffix:'',
+      selectedPrefix:'',
       selectedDuration:60
       };
   },
@@ -60,7 +60,7 @@ module.exports = React.createClass({
   },
   setMap:function(e){
     this.setState({selectedMap:e});
-    console.log(e);
+    console.log(e,e.length);
   },
   setPrefix:function(e){
     this.setState({selectedPrefix:e});
@@ -87,8 +87,8 @@ module.exports = React.createClass({
 
     this.setState({
       isAddOpen:false,
-      selectedPrefix:null,
-      selectedSuffix:null,
+      selectedPrefix:'',
+      selectedSuffix:'',
       selectedDuration:60
     });
 
@@ -98,6 +98,12 @@ module.exports = React.createClass({
     var self=this;
 
     var filtered = this.state.data.filter(function(t){
+      if (self.state.selectedMap === ''){
+        return true;
+      }else{
+        return (t.zone.toLowerCase()==self.state.selectedMap.toLowerCase());
+      }
+    }).filter(function(t){
       return (t.difficulty.toLowerCase()===self.state.selectedDifficulty.value);
     });
 
@@ -106,6 +112,8 @@ module.exports = React.createClass({
 
         <TempestSearch
           options={this.props.mapOptions}
+          prefixes={this.props.prefixes}
+          suffixes={this.props.suffixes}
           setMap={this.setMap}
           setPrefix={this.setPrefix}
           setSuffix={this.setSuffix}

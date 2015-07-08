@@ -83,6 +83,12 @@ var mapOptions = [ { value: 'Crypt', label: 'Crypt' },
 
 React.render(
 
-  <TempestApp options={options} options2={options2} mapOptions={mapOptions}/>,
+  <TempestApp
+  options={options}
+  options2={options2}
+  mapOptions={mapOptions}
+  prefixes = {prefixes}
+  suffixes = {suffixes}
+  />,
   document.getElementById('content')
 );
