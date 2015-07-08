@@ -31,7 +31,8 @@ module.exports = React.createClass({
       selectedPrefix:'',
       selectedDuration:60,
       prefixRatings:prefixRatings,
-      suffixRatings:suffixRatings
+      suffixRatings:suffixRatings,
+      tempestParties:[]
       };
   },
   loadCommentsFromServer: function() {
@@ -58,6 +59,7 @@ module.exports = React.createClass({
     });
 
     es.addEventListener("INITRATING",function(e){
+      console.log(e.data);
       var ratings = JSON.parse(e.data);
 
       self.setState({
@@ -65,6 +67,12 @@ module.exports = React.createClass({
         suffixRatings:ratings.SuffixRatings
       });
 
+    });
+
+    es.addEventListener("PARTY",function(e){
+      var parties = JSON.parse(e.data);
+      console.log(parties);
+      self.setState({tempestParties:self.state.tempestParties.concat(parties)});
     });
 
     es.addEventListener("RATING",function(e){

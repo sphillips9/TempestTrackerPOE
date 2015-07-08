@@ -2,19 +2,18 @@ package main
 
 import (
 	"net/http"
+	"runtime"
 	"sync"
 	"time"
 )
 
 type Tempest struct {
-	Type       string `json:"type"`
-	Difficulty string `json:"difficulty"`
-	Zone       string `json:"zone"`
-	StartTime  string `json:"startTime"`
-	EndTime    string `json:"endTime"`
-	Expire     int64  `json:"expire"`
-	Prefix     int    `json:"prefix"`
-	Suffix     int    `json:"suffix"`
+	Id      int
+	Minutes int
+	Zone    string `json:"zone"`
+	Expire  int64  `json:"expire"`
+	Prefix  int    `json:"prefix"`
+	Suffix  int    `json:"suffix"`
 }
 
 type tempestRating struct {
@@ -28,6 +27,12 @@ type tempestVote struct {
 	Rating int
 }
 
+type tempestParty struct {
+	TempestId int
+	IGN       string
+	Text      string
+}
+
 type currentRatings struct {
 	PrefixRatings []*tempestRating
 	SuffixRatings []*tempestRating
@@ -35,15 +40,20 @@ type currentRatings struct {
 
 var tempests []*Tempest
 var hub *UserHub
+
 var prefixRatings []*tempestRating
 var suffixRatings []*tempestRating
+var tempestParties []*tempestParty
+
 var tempLock sync.Mutex
+var nextTempestId int
 
 func init() {
 	hub = &UserHub{}
 	tempests = make([]*Tempest, 0)
 	prefixRatings = make([]*tempestRating, 40)
 	suffixRatings = make([]*tempestRating, 19)
+	nextTempestId = 1234
 
 	for i := 0; i < len(prefixRatings); i++ {
 		prefixRatings[i] = &tempestRating{}
@@ -76,8 +86,11 @@ func init() {
 
 func main() {
 
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	http.HandleFunc("/vote", handleVote)
 	http.HandleFunc("/tempest", handleTempests)
+	http.HandleFunc("/party", handleParty)
 	http.HandleFunc("/es", eventSource)
 	http.Handle("/", http.FileServer(http.Dir("static")))
 	http.ListenAndServe(":80", nil)

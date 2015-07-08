@@ -16,6 +16,38 @@ func getExpireTime() int64 {
 	return nanos / 1000000
 }
 
+func handleParty(w http.ResponseWriter, req *http.Request) {
+
+	defer req.Body.Close()
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(200)
+
+	switch req.Method {
+	case "POST":
+		buffer, err := ioutil.ReadAll(req.Body)
+		party := &tempestParty{}
+		err = json.Unmarshal(buffer, &party)
+
+		if err != nil {
+			return
+		}
+
+		func() {
+			tempLock.Lock()
+			defer tempLock.Unlock()
+			tempestParties = append(tempestParties, party)
+		}()
+
+		j, err := json.Marshal(party)
+		update := &UpdatePacket{}
+		update.Event = "PARTY"
+		update.Message = string(j)
+
+		hub.Broadcast(update)
+	}
+
+}
+
 func handleVote(w http.ResponseWriter, req *http.Request) {
 
 	defer req.Body.Close()
@@ -81,8 +113,10 @@ func handleTempests(w http.ResponseWriter, req *http.Request) {
 			func() {
 				tempLock.Lock()
 				defer tempLock.Unlock()
-				tempests = append(tempests, tempest)
 
+				tempest.Id = nextTempestId
+				nextTempestId++
+				tempests = append(tempests, tempest)
 			}()
 
 		}
@@ -147,10 +181,18 @@ func eventSource(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 
+		pj, err := json.Marshal(tempestParties)
+
+		if err != nil {
+			return
+		}
+
 		rw.Write([]byte("event: " + "TEMPEST" + "\n"))
 		rw.Write([]byte("data: " + string(tj) + "\n\n"))
 		rw.Write([]byte("event: " + "INITRATING" + "\n"))
 		rw.Write([]byte("data: " + string(rj) + "\n\n"))
+		rw.Write([]byte("event: " + "PARTY" + "\n"))
+		rw.Write([]byte("data: " + string(pj) + "\n\n"))
 		rw.Flush()
 
 	}()
