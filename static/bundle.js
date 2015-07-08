@@ -21019,7 +21019,6 @@
 	        rating= ((100*(pr + sr))/factor)|0;
 	      }
 
-
 	       return (
 	         React.createElement(TempestItem, {
 	         type: tempest.type, 

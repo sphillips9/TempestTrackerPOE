@@ -33,7 +33,6 @@ module.exports = React.createClass({
         rating= ((100*(pr + sr))/factor)|0;
       }
 
-
        return (
          <TempestItem
          type={tempest.type}
