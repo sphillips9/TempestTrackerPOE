@@ -8,7 +8,16 @@ var TempestSearch = require('./TempestSearch')
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return {NEXTID:0, data: [],selectedDifficulty: { value: 'merciless', label: 'merciless'},selectedMap:null};
+    return {
+      NEXTID:0,
+      data: [],
+      selectedDifficulty: { value: 'merciless', label: 'merciless'},
+      selectedMap:null,
+      isAddOpen:false,
+      selectedSuffix:null,
+      selectedPrefix:null,
+      selectedDuration:60
+      };
   },
   loadCommentsFromServer: function() {
 
@@ -49,9 +58,41 @@ module.exports = React.createClass({
     this.setState({data:temp});
 
   },
-  mapFilter:function(e){
+  setMap:function(e){
     this.setState({selectedMap:e});
     console.log(e);
+  },
+  setPrefix:function(e){
+    this.setState({selectedPrefix:e});
+    console.log(e);
+  },
+  setSuffix:function(e){
+    this.setState({selectedSuffix:e});
+    console.log(e);
+  },
+  setDuration:function(e){
+    this.setState({selectedDuration:e.target.value});
+    console.log(e);
+  },
+  toggleAddOpen:function(e){
+    console.log("toggle open");
+    this.setState({isAddOpen:!this.state.isAddOpen});
+  },
+  postTempest:function(e){
+    var tempest = {};
+    tempest.zone = this.state.selectedMap;
+    tempest.minutes = this.state.selectedDuration;
+    tempest.prefix = this.state.selectedPrefix;
+    tempest.suffix = this.state.selectedSuffix;
+
+    this.setState({
+      isAddOpen:false,
+      selectedPrefix:null,
+      selectedSuffix:null,
+      selectedDuration:60
+    });
+
+    console.log(tempest);
   },
   render: function() {
     var self=this;
@@ -63,7 +104,20 @@ module.exports = React.createClass({
     return (
       <div className="tempestApp">
 
-        <TempestSearch options={this.props.mapOptions} setMap={this.mapFilter} selectedMap={this.state.selectedMap}/>
+        <TempestSearch
+          options={this.props.mapOptions}
+          setMap={this.setMap}
+          setPrefix={this.setPrefix}
+          setSuffix={this.setSuffix}
+          setDuration={this.setDuration}
+          selectedMap={this.state.selectedMap}
+          toggleAddOpen={this.toggleAddOpen}
+          isAddOpen={this.state.isAddOpen}
+          selectedSuffix={this.state.selectedSuffix}
+          selectedPrefix={this.state.selectedPrefix}
+          selectedDuration={this.state.selectedDuration}
+          postTempest={this.postTempest}
+        />
 
         <div className="ui raised segment">
           <h1>Active Tempests</h1>

@@ -62,12 +62,70 @@
 	  { value: '3', label: '3' }
 	];
 
-	var mapOptions = [
-	  { value: 'palace', label: 'palace' },
-	  { value: 'courtyard', label: 'courtyard' },
-	  { value: 'fetid pool', label: 'fetid pool' }
 
-	]
+	var mapOptions = [ { value: 'Crypt', label: 'Crypt' },
+	  { value: 'Dried Lake', label: 'Dried Lake' },
+	  { value: 'Grotto', label: 'Grotto' },
+	  { value: 'Tropical Island', label: 'Tropical Island'},
+	  { value: 'Dunes', label: 'Dunes' },
+	  { value: 'Dungeon', label: 'Dungeon' },
+	  { value: 'Orchard', label: 'Orchard' },
+	  { value: 'Overgrown Ruin', label: 'Overgrown Ruin'},
+	  { value: 'Cemetery', label: 'Cemetery' },
+	  { value: 'Thicket', label: 'Thicket' },
+	  { value: 'Mountain Ledge', label: 'Mountain Ledge'},
+	  { value: 'Arcade', label: 'Arcade' },
+	  { value: 'Wharf', label: 'Wharf' },
+	  { value: 'Arsenal', label: 'Arsenal' },
+	  { value: 'Sewer', label: 'Sewer' },
+	  { value: 'Reef', label: 'Reef' },
+	  { value: 'Spider Lair', label: 'Spider Lair' },
+	  { value: 'Museum', label: 'Museum' },
+	  { value: 'Ghetto', label: 'Ghetto' },
+	  { value: 'Vaal Pyramid', label: 'Vaal Pyramid'},
+	  { value: 'Springs', label: 'Springs' },
+	  { value: 'Mud Geyser', label: 'Mud Geyser' },
+	  { value: 'Promenade', label: 'Promenade' },
+	  { value: 'Spider Forest', label: 'Spider Forest'},
+	  { value: 'Catacombs', label: 'Catacombs' },
+	  { value: 'Tunnel', label: 'Tunnel' },
+	  { value: 'Overgrown Shrine', label: 'Overgrown Shrine'},
+	  { value: 'Shore', label: 'Shore' },
+	  { value: 'Villa', label: 'Villa' },
+	  { value: 'Graveyard', label: 'Graveyard' },
+	  { value: 'Pier', label: 'Pier' },
+	  { value: 'Underground Sea', label: 'Underground Sea'},
+	  { value: 'Bog', label: 'Bog' },
+	  { value: 'Coves', label: 'Coves' },
+	  { value: 'Dry Woods', label: 'Dry Woods' },
+	  { value: 'Arachnid Nest', label: 'Arachnid Nest'},
+	  { value: 'Temple', label: 'Temple' },
+	  { value: 'Strand', label: 'Strand' },
+	  { value: 'Colonnade', label: 'Colonnade' },
+	  { value: 'Jungle Valley', label: 'Jungle Valley'},
+	  { value: 'Torture Chamber', label: 'Torture Chamber'},
+	  { value: 'Waste Pool', label: 'Waste Pool' },
+	  { value: 'Mine', label: 'Mine' },
+	  { value: 'Labyrinth', label: 'Labyrinth' },
+	  { value: 'Dry Peninsula', label: 'Dry Peninsula'},
+	  { value: 'Canyon', label: 'Canyon' },
+	  { value: 'Cells', label: 'Cells' },
+	  { value: 'Dark Forest', label: 'Dark Forest' },
+	  { value: 'Maze', label: 'Maze' },
+	  { value: 'Gorge', label: 'Gorge' },
+	  { value: 'Underground River', label: 'Underground River'},
+	  { value: 'Residence', label: 'Residence' },
+	  { value: 'Necropolis', label: 'Necropolis' },
+	  { value: 'Bazaar', label: 'Bazaar' },
+	  { value: 'Plateau', label: 'Plateau' },
+	  { value: 'Precinct', label: 'Precinct' },
+	  { value: 'Academy', label: 'Academy' },
+	  { value: 'Crematorium', label: 'Crematorium' },
+	  { value: 'Shipyard', label: 'Shipyard' },
+	  { value: 'Shrine', label: 'Shrine' },
+	  { value: 'Palace', label: 'Palace' },
+	  { value: 'Courtyard', label: 'Courtyard' } ];
+
 
 	React.render(
 
@@ -20465,7 +20523,16 @@
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  getInitialState: function() {
-	    return {NEXTID:0, data: [],selectedDifficulty: { value: 'merciless', label: 'merciless'},selectedMap:null};
+	    return {
+	      NEXTID:0,
+	      data: [],
+	      selectedDifficulty: { value: 'merciless', label: 'merciless'},
+	      selectedMap:null,
+	      isAddOpen:false,
+	      selectedSuffix:null,
+	      selectedPrefix:null,
+	      selectedDuration:60
+	      };
 	  },
 	  loadCommentsFromServer: function() {
 
@@ -20506,9 +20573,41 @@
 	    this.setState({data:temp});
 
 	  },
-	  mapFilter:function(e){
+	  setMap:function(e){
 	    this.setState({selectedMap:e});
 	    console.log(e);
+	  },
+	  setPrefix:function(e){
+	    this.setState({selectedPrefix:e});
+	    console.log(e);
+	  },
+	  setSuffix:function(e){
+	    this.setState({selectedSuffix:e});
+	    console.log(e);
+	  },
+	  setDuration:function(e){
+	    this.setState({selectedDuration:e.target.value});
+	    console.log(e);
+	  },
+	  toggleAddOpen:function(e){
+	    console.log("toggle open");
+	    this.setState({isAddOpen:!this.state.isAddOpen});
+	  },
+	  postTempest:function(e){
+	    var tempest = {};
+	    tempest.zone = this.state.selectedMap;
+	    tempest.minutes = this.state.selectedDuration;
+	    tempest.prefix = this.state.selectedPrefix;
+	    tempest.suffix = this.state.selectedSuffix;
+
+	    this.setState({
+	      isAddOpen:false,
+	      selectedPrefix:null,
+	      selectedSuffix:null,
+	      selectedDuration:60
+	    });
+
+	    console.log(tempest);
 	  },
 	  render: function() {
 	    var self=this;
@@ -20520,7 +20619,20 @@
 	    return (
 	      React.createElement("div", {className: "tempestApp"}, 
 
-	        React.createElement(TempestSearch, {options: this.props.mapOptions, setMap: this.mapFilter, selectedMap: this.state.selectedMap}), 
+	        React.createElement(TempestSearch, {
+	          options: this.props.mapOptions, 
+	          setMap: this.setMap, 
+	          setPrefix: this.setPrefix, 
+	          setSuffix: this.setSuffix, 
+	          setDuration: this.setDuration, 
+	          selectedMap: this.state.selectedMap, 
+	          toggleAddOpen: this.toggleAddOpen, 
+	          isAddOpen: this.state.isAddOpen, 
+	          selectedSuffix: this.state.selectedSuffix, 
+	          selectedPrefix: this.state.selectedPrefix, 
+	          selectedDuration: this.state.selectedDuration, 
+	          postTempest: this.postTempest}
+	        ), 
 
 	        React.createElement("div", {className: "ui raised segment"}, 
 	          React.createElement("h1", null, "Active Tempests"), 
@@ -20920,31 +21032,88 @@
 	  logChange: function(val) {
 	    console.log("Selected: " + val);
 	  },
+	  postTempest:function(){
+
+
+	  },
 
 	  render: function() {
 
-	    console.log("rendering");
+	    var addTempestClass = 'hidden';
+
+	    if (this.props.isAddOpen){
+	      addTempestClass = '';
+	    }
+
 
 	    return(
 	    React.createElement("div", {className: "tempestSearch"}, 
 
-	      React.createElement("div", {className: "ui menu"}, 
-	      React.createElement("div", {className: "item"}, 
+	    React.createElement("div", {className: "ui raised segment"}, 
+	    React.createElement("div", null, 
 
-	        React.createElement(Select, {className: "widthwidth", 
-	          name: "form-field-name", 
-	          options: this.props.options, 
-	          onChange: this.props.setMap, 
-	          value: this.props.selectedMap}
-	        )
-	        ), 
-	        React.createElement("div", {className: "right menu"}, 
-	          React.createElement("a", {className: "item"}, 
-	            React.createElement("i", {className: "add square icon"}), 
+	      React.createElement("div", {className: "inline"}, 
+
+	          React.createElement(Select, {className: "widthwidth", 
+	            name: "form-field-name", 
+	            options: this.props.options, 
+	            onChange: this.props.setMap, 
+	            value: this.props.selectedMap, 
+	            placeholder: "select map..."}
+	          )
+	      ), 
+
+	        React.createElement("div", {className: "ui right floated header"}, 
+	          React.createElement("button", {className: "ui basic button", onClick: this.props.toggleAddOpen}, 
+	            React.createElement("i", {className: "dropdown icon"}), 
 	            "Add Tempest"
 	          )
 	        )
 
+	      ), 
+
+
+	      React.createElement("div", {className: addTempestClass}, 
+
+	        React.createElement("h4", {className: "ui horizontal divider header"}, 
+	          React.createElement("i", {className: "tag icon"}), 
+	          "Description"
+	        ), 
+
+	        React.createElement("label", null, "Tempest Prefix"), 
+	        React.createElement(Select, {
+	          name: "tempest-prefix", 
+	          options: this.props.options, 
+	          onChange: this.props.setPrefix, 
+	          value: this.props.selectedPrefix}
+	        ), 
+
+	        React.createElement("label", null, "Tempest Suffix"), 
+	        React.createElement(Select, {
+	          name: "tempest-suffix", 
+	          options: this.props.options, 
+	          onChange: this.props.setSuffix, 
+	          value: this.props.selectedSuffix}
+	        ), 
+
+	        React.createElement("div", {className: "ui form"}, 
+
+	        React.createElement("div", {className: "field"}, 
+	          React.createElement("label", null, "Minutes Left"), 
+	          React.createElement("input", {name: "tempest-duration", 
+	          placeholder: "minutes left", 
+	          value: this.props.selectedDuration, 
+	          type: "text", 
+	          onChange: this.props.setDuration}
+	          )
+	        ), 
+
+	        React.createElement("button", {className: "ui basic button", onClick: this.props.postTempest}, 
+	          React.createElement("i", {className: "icon user"}), 
+	          "Submit"
+	        )
+	        )
+	        )
 	      )
 
 	    )

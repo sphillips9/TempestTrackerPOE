@@ -8,31 +8,88 @@ module.exports = React.createClass({
   logChange: function(val) {
     console.log("Selected: " + val);
   },
+  postTempest:function(){
+
+
+  },
 
   render: function() {
 
-    console.log("rendering");
+    var addTempestClass = 'hidden';
+
+    if (this.props.isAddOpen){
+      addTempestClass = '';
+    }
+
 
     return(
     <div className="tempestSearch">
 
-      <div className="ui menu">
-      <div className="item">
+    <div className="ui raised segment">
+    <div>
 
-        <Select className="widthwidth"
-          name="form-field-name"
-          options={this.props.options}
-          onChange={this.props.setMap}
-          value={this.props.selectedMap}
-        />
-        </div>
-        <div className="right menu">
-          <a className="item">
-            <i className="add square icon"></i>
+      <div className="inline">
+
+          <Select className="widthwidth"
+            name="form-field-name"
+            options={this.props.options}
+            onChange={this.props.setMap}
+            value={this.props.selectedMap}
+            placeholder={"select map..."}
+          />
+      </div>
+
+        <div className="ui right floated header">
+          <button className="ui basic button"  onClick={this.props.toggleAddOpen}>
+            <i className="dropdown icon"></i>
             Add Tempest
-          </a>
+          </button>
         </div>
 
+      </div>
+
+
+      <div className = {addTempestClass}>
+
+        <h4 className ="ui horizontal divider header">
+          <i className ="tag icon"></i>
+          Description
+        </h4>
+
+        <label>Tempest Prefix</label>
+        <Select
+          name="tempest-prefix"
+          options={this.props.options}
+          onChange={this.props.setPrefix}
+          value={this.props.selectedPrefix}
+        />
+
+        <label>Tempest Suffix</label>
+        <Select
+          name="tempest-suffix"
+          options={this.props.options}
+          onChange={this.props.setSuffix}
+          value={this.props.selectedSuffix}
+        />
+
+        <div className="ui form">
+
+        <div className="field">
+          <label>Minutes Left</label>
+          <input name="tempest-duration"
+          placeholder="minutes left"
+          value={this.props.selectedDuration}
+          type="text"
+          onChange={this.props.setDuration}
+          />
+        </div>
+
+        <button className="ui basic button" onClick={this.props.postTempest}>
+          <i className="icon user"></i>
+          Submit
+        </button>
+        </div>
+        </div>
       </div>
 
     </div>
