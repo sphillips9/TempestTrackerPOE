@@ -13,6 +13,8 @@ type Tempest struct {
 	StartTime  string `json:"startTime"`
 	EndTime    string `json:"endTime"`
 	Expire     int64  `json:"expire"`
+	Prefix     string `json:"prefix"`
+	Suffix     string `json:"suffix"`
 }
 
 var tempests []*Tempest

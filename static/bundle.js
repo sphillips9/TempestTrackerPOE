@@ -20921,8 +20921,12 @@
 
 	    var tempestNodes = this.props.data.map(function (tempest) {
 	     return (
-	       React.createElement(TempestItem, {type: tempest.type, difficulty: tempest.difficulty, zone: tempest.zone, expire: tempest.expire, key: tempest.id}
-
+	       React.createElement(TempestItem, {
+	       type: tempest.type, 
+	       difficulty: tempest.difficulty, 
+	       zone: tempest.zone, 
+	       expire: tempest.expire, 
+	       key: tempest.id}
 	       )
 	     );
 	   });

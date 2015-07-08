@@ -42,9 +42,7 @@ module.exports =React.createClass({
             <span>{timeRemaining}</span>
           </div>
           <div className="description">
-          <p>
-              Description Of Tempest
-          </p>
+          <p>{this.props.prefix} Tempest of {this.props.suffix}</p>
 
           </div>
 

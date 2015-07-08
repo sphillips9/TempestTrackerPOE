@@ -8,9 +8,16 @@ module.exports = React.createClass({
 
     var tempestNodes = this.props.data.map(function (tempest) {
      return (
-       <TempestItem type={tempest.type} difficulty={tempest.difficulty} zone={tempest.zone} expire={tempest.expire} key={tempest.id}>
+       <TempestItem
+       type={tempest.type}
+       difficulty={tempest.difficulty}
+       zone={tempest.zone}
+       expire={tempest.expire}
+       key={tempest.id}
+       prefix={tempest.prefix}
+       suffix={tempest.suffix}
+       />
 
-       </TempestItem>
      );
    });
 
