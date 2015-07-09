@@ -47,8 +47,6 @@ module.exports =React.createClass({
     var partyName = 'hidden';
     var tempestParties = null;
 
-    console.log("thistempest", this.props.tempestParties);
-
     var matchingParties = this.props.tempestParties.filter(function(party){
       return party.TempestId === self.props.tempestId;
     });
@@ -129,7 +127,7 @@ module.exports =React.createClass({
         </div>
 
         <div className={partyName}>
-          <div className="ui relaxed divided list">
+          <div className="ui relaxed mini divided list">
             {tempestParties}
           </div>
         </div>
