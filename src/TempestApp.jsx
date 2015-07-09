@@ -4,7 +4,7 @@ var React = require('react');
 var Dropdown = require('./Dropdown');
 var TempestList = require('./TempestList');
 var TempestSearch = require('./TempestSearch')
-
+var ratingCache = [];
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -36,6 +36,7 @@ module.exports = React.createClass({
       };
   },
   loadCommentsFromServer: function() {
+
 
     var self = this;
     var es = new EventSource("http://gdf3.com/es");
@@ -78,17 +79,9 @@ module.exports = React.createClass({
     es.addEventListener("RATING",function(e){
       var ratings = JSON.parse(e.data);
 
-      var suffixRatings = self.state.suffixRatings;
-      var prefixRatings = self.state.prefixRatings;
+      ratingCache = ratingCache.concat(ratings);
 
-      [].concat(ratings).forEach(function(rating){
-        suffixRatings[rating.Suffix].Upvotes+=rating.Rating;
-        suffixRatings[rating.Suffix].Votes++;
-        prefixRatings[rating.Prefix].Upvotes+=rating.Rating;
-        prefixRatings[rating.Prefix].Votes++;
-      });
 
-      self.setState({prefixRatings:prefixRatings, suffixRatings:suffixRatings});
     });
 
   },
@@ -104,7 +97,23 @@ module.exports = React.createClass({
       return (t.expire > now);
     });
 
-    this.setState({data:temp});
+    var suffixRatings = this.state.suffixRatings;
+    var prefixRatings = this.state.prefixRatings;
+
+    ratingCache.forEach(function(rating){
+      suffixRatings[rating.Suffix].Upvotes+=rating.Rating;
+      suffixRatings[rating.Suffix].Votes++;
+      prefixRatings[rating.Prefix].Upvotes+=rating.Rating;
+      prefixRatings[rating.Prefix].Votes++;
+    });
+
+    ratingCache=[];
+
+    this.setState({
+      data:temp,
+      prefixRatings:prefixRatings,
+      suffixRatings:suffixRatings
+    });
 
   },
   setMap:function(e){
