@@ -85,7 +85,7 @@ var RATINGMAP = [];
 React.render(
 
   <TempestApp
-  options={options}
+  maps={maps}
   options2={options2}
   mapOptions={mapOptions}
   prefixes = {prefixes}

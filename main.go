@@ -10,10 +10,10 @@ import (
 type Tempest struct {
 	Id      int
 	Minutes int
-	Zone    string `json:"zone"`
-	Expire  int64  `json:"expire"`
-	Prefix  int    `json:"prefix"`
-	Suffix  int    `json:"suffix"`
+	Zone    int   `json:"zone"`
+	Expire  int64 `json:"expire"`
+	Prefix  int   `json:"prefix"`
+	Suffix  int   `json:"suffix"`
 }
 
 type tempestRating struct {
@@ -47,6 +47,13 @@ var tempestParties []*tempestParty
 
 var tempLock sync.Mutex
 var nextTempestId int
+
+func tempestReset() {
+
+	tempLock.Lock()
+	defer tempLock.Unlock()
+
+}
 
 func init() {
 	hub = &UserHub{}

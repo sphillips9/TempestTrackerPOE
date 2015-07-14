@@ -117,7 +117,7 @@ module.exports = React.createClass({
 
   },
   setMap:function(e){
-    this.setState({selectedMap:e});
+    this.setState({selectedMap:e|0});
     console.log(e,e.length);
   },
   setPrefix:function(e,o){
@@ -184,7 +184,7 @@ module.exports = React.createClass({
       <div className="tempestApp">
 
         <TempestSearch
-          options={this.props.mapOptions}
+          options={this.props.maps}
           prefixes={this.props.prefixes}
           suffixes={this.props.suffixes}
           setMap={this.setMap}

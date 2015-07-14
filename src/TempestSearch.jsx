@@ -23,6 +23,7 @@ module.exports = React.createClass({
 
     var currentPrefix = {value:this.props.selectedPrefix, label:PREFIXMAP[this.props.selectedPrefix]};
     var currentSuffix = {value:this.props.selectedSuffix, label:SUFFIXMAP[this.props.selectedSuffix]};
+    var currentMap = maps[this.props.selectedMap];
 
     return(
     <div className="tempestSearch">
@@ -36,7 +37,7 @@ module.exports = React.createClass({
             name="form-field-name"
             options={this.props.options}
             onChange={this.props.setMap}
-            value={this.props.selectedMap}
+            value={currentMap}
             placeholder={"select map..."}
           />
       </div>

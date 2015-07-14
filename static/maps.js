@@ -1,89 +1,91 @@
-var maps = [];
-
-maps[66]=[
-"Crypt",
-"Dried Lake",
-"Grotto",
-"Tropical Island",
+var mapNames = ["Crypt",
+"The Cowards Trial",
+"Desert",
 "Dunes",
 "Dungeon",
-"Orchard",
-"Overgrown Ruin"];
-maps[67]=[
-"Cemetery",
-"Thicket",
-"Mountain Ledge",
+"Grotto",
+"Pit",
+"Tropical Island",
+"Untainted Paradise",
 "Arcade",
+"Cemetery",
+"Channel",
+"Mountain Ledge",
+"Maelstrom of Chaos",
+"Sewer",
+"Thicket",
 "Wharf",
-"Arsenal",
-"Sewer"]
-maps[68]=[
-"Reef",
-"Spider Lair",
-"Museum",
+"The Apex of Sacrifice",
 "Ghetto",
+"Mud Geyser",
+"Museum",
+"Quarry",
+"Reef",
+"Mao Kun",
+"Spider Lair",
 "Vaal Pyramid",
-"Springs",
-"Mud Geyser"]
-maps[69]=[
-"Promenade",
-"Spider Forest",
-"Catacombs",
-"Tunnel",
+"Vaults of Atziri",
+"Arena",
 "Overgrown Shrine",
-"Shore"]
-maps[70]=[
-"Villa",
+"Actons Nightmare",
+"Promenade",
+"Hall of Grandmasters",
+"Shore",
+"Spider Forest",
+"Tunnel",
+"Bog",
+"Coves",
 "Graveyard",
 "Pier",
 "Underground Sea",
-"Bog",
-"Coves"]
-maps[71]=[
-"Dry Woods",
+"Villa",
 "Arachnid Nest",
-"Temple",
+"Catacomb",
+"Colonnade",
+"Dry Woods",
+"Poorjoys Asylum",
 "Strand",
-"Colonnade"]
-maps[72]=[
+"Temple",
+"Whakawairua Tuahu",
 "Jungle Valley",
+"Labyrinth",
+"Mine",
+"Obas Cursed Trove",
 "Torture Chamber",
 "Waste Pool",
-"Mine",
-"Labyrinth"];
-maps[73]=[
-"Dry Peninsula",
 "Canyon",
 "Cells",
-"Dark Forest"];
-maps[74]=[
-"Maze",
+"Dark Forest",
+"Dry Peninsula",
+"Orchard",
+"Arid Lake",
 "Gorge",
+"Residence",
 "Underground River",
-"Residence"];
-maps[75]=[
-"Necropolis",
 "Bazaar",
-"Plateau"];
-maps[76]=[
-"Precinct",
+"Death and Taxes",
+"Necropolis",
+"Plateau",
+"Volcano",
 "Academy",
-"Crematorium"];
-maps[77]=[
-"Shipyard",
-"Shrine"];
-maps[78]=[
+"Crematorium",
+"Precinct",
+"Springs",
+"Arsenal",
+"Overgrown Ruin",
+"The Alluring Abyss",
+"Courtyard",
+"Excavation",
+"Wasteland",
+"Waterways",
+"Maze",
+"Olmecs Sanctum",
 "Palace",
-"Courtyard"];
+"Shrine",
+"Vaal Temple",
+"Abyss",
+"Colosseum"];
 
-var options = [];
-
-for(var i = 66; i<=78;i++){
-
-  maps[i].forEach(function(map){
-    options.push({value:map, label:map});
-  });
-
-}
-
-console.log(options);
+var maps = mapNames.map(function(name,index){
+  return {value:index, label:name};
+});
