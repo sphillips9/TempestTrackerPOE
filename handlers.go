@@ -187,12 +187,12 @@ func eventSource(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		rw.Write([]byte("event: " + "TEMPEST" + "\n"))
-		rw.Write([]byte("data: " + string(tj) + "\n\n"))
-		rw.Write([]byte("event: " + "INITRATING" + "\n"))
-		rw.Write([]byte("data: " + string(rj) + "\n\n"))
-		rw.Write([]byte("event: " + "PARTY" + "\n"))
-		rw.Write([]byte("data: " + string(pj) + "\n\n"))
+		rw.Write([]byte("event: " + "TEMPEST" + "\r\n"))
+		rw.Write([]byte("data: " + string(tj) + "\r\n\r\n"))
+		rw.Write([]byte("event: " + "INITRATING" + "\r\n"))
+		rw.Write([]byte("data: " + string(rj) + "\r\n\r\n"))
+		rw.Write([]byte("event: " + "PARTY" + "\r\n"))
+		rw.Write([]byte("data: " + string(pj) + "\r\n\r\n"))
 		rw.Flush()
 
 	}()
