@@ -205,8 +205,8 @@ func eventSource(w http.ResponseWriter, req *http.Request) {
 
 		case update := <-uc.Queue:
 
-			rw.Write([]byte("event: " + update.Event + "\n"))
-			rw.Write([]byte("data: " + update.Message + "\n\n"))
+			rw.Write([]byte("event: " + update.Event + "\r\n"))
+			rw.Write([]byte("data: " + update.Message + "\r\n\r\n"))
 			rw.Flush()
 
 		}
