@@ -24,7 +24,7 @@ module.exports = React.createClass({
       NEXTID:0,
       data: [],
       selectedDifficulty: { value: 'merciless', label: 'merciless'},
-      selectedMap:'',
+      selectedMap:null,
       isAddOpen:false,
       isFiltersOpen:false,
       selectedSuffix:'',
@@ -116,9 +116,15 @@ module.exports = React.createClass({
     });
 
   },
-  setMap:function(e){
-    this.setState({selectedMap:e|0});
-    console.log(e,e.length);
+  setMap:function(e,o){
+    console.log("setmap",e,o);
+
+    if (o.length>0){
+      this.setState({selectedMap:e|0});
+    }
+    else{
+      this.setState({selectedMap:null});
+    }
   },
   setPrefix:function(e,o){
     this.setState({selectedPrefix:e|0});
@@ -166,13 +172,16 @@ module.exports = React.createClass({
   render: function() {
     var self=this;
 
-    var filtered = this.state.data.filter(function(t){
-      if (self.state.selectedMap === ''){
-        return true;
-      }else{
-        return (t.zone.toLowerCase()==self.state.selectedMap.toLowerCase());
-      }
-    });
+    var filtered;
+
+    if (self.state.selectedMap === null){
+      filtered = this.state.data;
+    }else{
+      filtered = this.state.data.filter(function(t){
+        return (t.zone===self.state.selectedMap);
+      });
+
+    }
 
     var isFiltersOpen = 'hidden';
 

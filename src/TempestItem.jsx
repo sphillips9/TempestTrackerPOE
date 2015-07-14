@@ -78,6 +78,8 @@ module.exports =React.createClass({
       rating = "";
     }
 
+    var zoneName = maps[this.props.zone].label;
+
     return (
       <div className="tempestItem item">
         <div className="ui tiny image">
@@ -85,7 +87,7 @@ module.exports =React.createClass({
         </div>
         <div className="content">
           <a className="header">
-            {this.props.zone}
+            {zoneName}
           </a>
           <div className="meta">
             <span>{prefix} Tempest of {suffix}</span>
