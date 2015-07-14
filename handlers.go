@@ -2,17 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	//  "fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 func getExpireTime() int64 {
-	now := time.Now()
-	expire := now.Add(time.Minute * 60)
-	nanos := expire.UnixNano()
+	//now := time.Now()
+	//expire := now.Add(time.Minute * 60)
+	nanos := nextHour.UnixNano()
 	return nanos / 1000000
 }
 
@@ -109,11 +107,11 @@ func handleTempests(w http.ResponseWriter, req *http.Request) {
 			//fmt.Println(err.Error())
 		} else {
 
-			tempest.Expire = getExpireTime()
 			func() {
 				tempLock.Lock()
 				defer tempLock.Unlock()
 
+				tempest.Expire = getExpireTime()
 				tempest.Id = nextTempestId
 				nextTempestId++
 				tempests = append(tempests, tempest)

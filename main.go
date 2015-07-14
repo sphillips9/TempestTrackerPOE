@@ -48,14 +48,23 @@ var tempestParties []*tempestParty
 var tempLock sync.Mutex
 var nextTempestId int
 
+var nextHour time.Time
+
 func tempestReset() {
 
 	tempLock.Lock()
 	defer tempLock.Unlock()
-
 }
 
 func init() {
+
+	starttime := time.Now()
+
+	nextHour = starttime.Add(time.Duration(-starttime.Minute()) * time.Minute).Add(time.Duration(-starttime.Second()) * time.Second).Add(time.Hour)
+
+	dif := nextHour.Sub(starttime)
+	hourlyTimer := time.NewTicker(dif)
+
 	hub = &UserHub{}
 	tempests = make([]*Tempest, 0)
 	tempestParties = make([]*tempestParty, 0)
@@ -72,21 +81,30 @@ func init() {
 	}
 
 	go func() {
-		tick := time.NewTicker(5 * time.Minute)
+
 		for {
-			<-tick.C
+			<-hourlyTimer.C
 
 			func() {
 				tempLock.Lock()
 				defer tempLock.Unlock()
-				now := time.Now().UnixNano() / 1000000
 
-				for i := len(tempests) - 1; i >= 0; i-- {
-					if tempests[i].Expire < now {
-						tempests = append(tempests[:i], tempests[i+1:]...)
+				/*
+					now := time.Now().UnixNano() / 1000000
+
+					for i := len(tempests) - 1; i >= 0; i-- {
+						if tempests[i].Expire < now {
+							tempests = append(tempests[:i], tempests[i+1:]...)
+						}
 					}
-				}
+				*/
+				tempests = make([]*Tempest, 0)
+
+				nextHour = nextHour.Add(time.Hour)
+				hourlyTimer = time.NewTicker(time.Hour)
+
 			}()
+
 		}
 	}()
 
